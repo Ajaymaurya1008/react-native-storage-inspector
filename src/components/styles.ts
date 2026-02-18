@@ -1,0 +1,417 @@
+import { StyleSheet } from 'react-native';
+import { theme } from '../theme';
+import { LAYOUT } from '../constants';
+
+const { colors } = theme;
+
+export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '100%',
+    backgroundColor: colors.background,
+  },
+  content: {
+    flex: 1,
+  },
+  scroll: {
+    flex: 1,
+  },
+  header: {
+    height: LAYOUT.headerHeight,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: LAYOUT.padding,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.border,
+    backgroundColor: colors.background,
+  },
+  headerLeft: {
+    minWidth: 44,
+    alignItems: 'flex-start',
+  },
+  headerCenter: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerRight: {
+    minWidth: 44,
+    alignItems: 'flex-end',
+  },
+  sectionHeaderLabelWrap: {
+    flex: 1,
+  },
+  headerTitle: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  headerButton: {
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: LAYOUT.fabSize + LAYOUT.padding + 20,
+    paddingTop: LAYOUT.padding,
+  },
+  sectionHeader: {
+    height: LAYOUT.sectionHeaderHeight,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: LAYOUT.padding,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.border,
+    backgroundColor: colors.backgroundSecondary,
+    marginTop: LAYOUT.padding,
+    marginHorizontal: LAYOUT.padding,
+  },
+  sectionHeaderLabel: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  sectionHeaderCount: {
+    color: colors.textSecondary,
+    fontWeight: '400',
+  },
+  storageRowActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: LAYOUT.iconGap,
+  },
+  iconButton: {
+    width: LAYOUT.iconButtonSize,
+    height: LAYOUT.iconButtonSize,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconSlot: {
+    width: LAYOUT.iconButtonSize,
+    height: LAYOUT.iconButtonSize,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  itemRow: {
+    minHeight: LAYOUT.rowMinHeight,
+    paddingHorizontal: LAYOUT.padding,
+    paddingVertical: 12,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.borderLight,
+    backgroundColor: colors.background,
+    marginHorizontal: LAYOUT.padding,
+    marginBottom: 4,
+  },
+  itemRowCollapsed: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+  },
+  itemKey: {
+    flex: 1,
+    fontSize: LAYOUT.fontSize,
+    fontWeight: '500',
+    color: colors.text,
+  },
+  itemChars: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    marginTop: 2,
+  },
+  itemRowActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: LAYOUT.iconGap,
+    gap: LAYOUT.iconGap,
+  },
+  itemRowExpanded: {
+    paddingTop: 4,
+  },
+  valueBox: {
+    backgroundColor: colors.backgroundSecondary,
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 8,
+    marginBottom: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
+  },
+  valueBoxLabel: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: colors.textSecondary,
+    marginBottom: 4,
+    textTransform: 'uppercase',
+  },
+  valueBoxText: {
+    fontSize: LAYOUT.fontSize,
+    color: colors.text,
+  },
+  empty: {
+    padding: LAYOUT.padding * 2,
+    alignItems: 'center',
+    marginHorizontal: LAYOUT.padding,
+  },
+  emptyText: {
+    fontSize: LAYOUT.fontSize,
+    color: colors.textMuted,
+  },
+  loading: {
+    padding: LAYOUT.padding * 2,
+    alignItems: 'center',
+    marginHorizontal: LAYOUT.padding,
+  },
+  loadingText: {
+    fontSize: LAYOUT.fontSize,
+    color: colors.textSecondary,
+  },
+  error: {
+    padding: LAYOUT.padding,
+    backgroundColor: colors.backgroundTertiary,
+    marginHorizontal: LAYOUT.padding,
+    marginVertical: 8,
+    borderRadius: 8,
+  },
+  errorText: {
+    fontSize: LAYOUT.fontSize,
+    color: colors.text,
+  },
+  keychainHint: {
+    padding: LAYOUT.padding,
+    marginHorizontal: LAYOUT.padding,
+    marginTop: 8,
+    marginBottom: 4,
+    backgroundColor: colors.backgroundSecondary,
+    borderRadius: 8,
+  },
+  keychainHintText: {
+    fontSize: LAYOUT.fontSize - 1,
+    color: colors.textSecondary,
+  },
+  list: {
+    flex: 1,
+  },
+  listContent: {
+    flexGrow: 1,
+    paddingBottom: LAYOUT.fabSize + LAYOUT.padding + 20,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    minHeight: LAYOUT.rowMinHeight,
+    paddingHorizontal: LAYOUT.padding,
+    paddingVertical: 12,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.borderLight,
+    backgroundColor: colors.background,
+    marginHorizontal: LAYOUT.padding,
+  },
+  rowKey: {
+    flex: 1,
+    fontSize: LAYOUT.fontSize,
+    fontWeight: '500',
+    color: colors.text,
+  },
+  rowValue: {
+    fontSize: LAYOUT.fontSize - 1,
+    color: colors.textSecondary,
+  },
+  rowActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: LAYOUT.iconGap,
+    gap: LAYOUT.iconGap,
+  },
+  rowButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  rowButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  rowButtonDanger: {
+    color: colors.text,
+  },
+  addButton: {
+    position: 'absolute',
+    bottom: LAYOUT.padding + 16,
+    right: LAYOUT.padding + 16,
+    width: LAYOUT.fabSize,
+    height: LAYOUT.fabSize,
+    borderRadius: LAYOUT.fabSize / 2,
+    backgroundColor: colors.text,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: colors.inverted,
+  },
+  fab: {
+    position: 'absolute',
+    bottom: LAYOUT.padding + 16,
+    right: LAYOUT.padding + 16,
+    width: LAYOUT.fabSize,
+    height: LAYOUT.fabSize,
+    borderRadius: LAYOUT.fabSize / 2,
+    backgroundColor: colors.text,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  formOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  formModal: {
+    width: '100%',
+    maxWidth: LAYOUT.screenWidth,
+    backgroundColor: colors.background,
+    borderTopLeftRadius: LAYOUT.modalRadius,
+    borderTopRightRadius: LAYOUT.modalRadius,
+    padding: LAYOUT.padding,
+    paddingBottom: LAYOUT.padding + 34,
+  },
+  formHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: LAYOUT.padding,
+  },
+  formTitle: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: colors.text,
+    flex: 1,
+  },
+  formCloseButton: {
+    width: 44,
+    height: 44,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+  formStorageType: {
+    fontSize: 13,
+    color: colors.textSecondary,
+    marginBottom: 12,
+  },
+  formLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: colors.textSecondary,
+    marginBottom: 6,
+  },
+  formInput: {
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 10,
+    padding: 12,
+    fontSize: LAYOUT.fontSize,
+    marginBottom: LAYOUT.padding,
+    color: colors.text,
+    backgroundColor: colors.background,
+  },
+  formInputDisabled: {
+    backgroundColor: colors.backgroundSecondary,
+    color: colors.textSecondary,
+  },
+  formActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 12,
+    marginTop: 8,
+  },
+  formButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    minWidth: 100,
+    alignItems: 'center',
+  },
+  formButtonCancel: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: colors.text,
+  },
+  formButtonSubmit: {
+    backgroundColor: colors.text,
+  },
+  formButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  formButtonTextCancel: {
+    color: colors.text,
+  },
+  formButtonTextSubmit: {
+    color: colors.inverted,
+  },
+  confirmOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  confirmModal: {
+    width: '100%',
+    maxWidth: LAYOUT.screenWidth,
+    backgroundColor: colors.background,
+    borderTopLeftRadius: LAYOUT.modalRadius,
+    borderTopRightRadius: LAYOUT.modalRadius,
+    padding: LAYOUT.padding,
+    paddingBottom: LAYOUT.padding + 34,
+  },
+  confirmHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  confirmTitle: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: colors.text,
+    flex: 1,
+  },
+  confirmMessage: {
+    fontSize: 15,
+    color: colors.textSecondary,
+    lineHeight: 22,
+    marginBottom: 20,
+  },
+  confirmActions: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  confirmButton: {
+    flex: 1,
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  confirmButtonSecondary: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: colors.text,
+  },
+  confirmButtonDanger: {
+    backgroundColor: colors.text,
+  },
+  confirmButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  confirmButtonTextSecondary: {
+    color: colors.text,
+  },
+  confirmButtonTextDanger: {
+    color: colors.inverted,
+  },
+});

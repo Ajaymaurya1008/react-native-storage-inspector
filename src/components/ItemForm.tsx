@@ -1,0 +1,148 @@
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Modal,
+} from 'react-native';
+import type { StorageItem } from '../adapters/types';
+import { Icon } from './Icon';
+import { styles } from './styles';
+import { theme } from '../theme';
+
+export interface ItemFormProps {
+  visible: boolean;
+  storageName: string;
+  editingItem: StorageItem | null;
+  onSave: (key: string, value: string) => Promise<void>;
+  onCancel: () => void;
+}
+
+export function ItemForm({
+  visible,
+  storageName,
+  editingItem,
+  onSave,
+  onCancel,
+}: ItemFormProps) {
+  const [key, setKey] = useState('');
+  const [value, setValue] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const isEdit = editingItem !== null;
+
+  useEffect(() => {
+    if (visible) {
+      setKey(editingItem?.key ?? '');
+      setValue(editingItem?.value ?? '');
+      setError(null);
+    }
+  }, [visible, editingItem]);
+
+  const handleSubmit = async () => {
+    const k = key.trim();
+    if (!k) {
+      setError('Key is required');
+      return;
+    }
+    setSaving(true);
+    setError(null);
+    try {
+      await onSave(k, value);
+      onCancel();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Save failed');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const title = isEdit
+    ? `Edit ${editingItem?.key ?? ''}`
+    : `Add ${storageName} Item`;
+
+  return (
+    <Modal
+      visible={visible}
+      transparent
+      animationType="slide"
+      onRequestClose={onCancel}
+    >
+      <View style={styles.formOverlay}>
+        <TouchableOpacity
+          style={{ flex: 1, width: '100%' }}
+          activeOpacity={1}
+          onPress={onCancel}
+        />
+        <View style={styles.formModal}>
+          <View style={styles.formHeader}>
+            <Text style={styles.formTitle} numberOfLines={1}>
+              {title}
+            </Text>
+            <TouchableOpacity
+              style={styles.formCloseButton}
+              onPress={onCancel}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              activeOpacity={0.6}
+            >
+              <Icon
+                name="close"
+                size={24}
+                tintColor={theme.colors.textSecondary}
+              />
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.formStorageType}>
+            Storage Type: {storageName}
+          </Text>
+          <Text style={styles.formLabel}>Key</Text>
+          <TextInput
+            style={[styles.formInput, isEdit && styles.formInputDisabled]}
+            value={key}
+            onChangeText={setKey}
+            placeholder="Enter key"
+            placeholderTextColor={theme.colors.textMuted}
+            editable={!isEdit}
+            autoCapitalize="none"
+            multiline
+          />
+          <Text style={styles.formLabel}>Value</Text>
+          <TextInput
+            style={styles.formInput}
+            value={value}
+            onChangeText={setValue}
+            placeholder="Enter value"
+            placeholderTextColor={theme.colors.textMuted}
+            multiline
+            numberOfLines={3}
+          />
+          {error ? (
+            <Text style={[styles.errorText, { marginBottom: 12 }]}>{error}</Text>
+          ) : null}
+          <View style={styles.formActions}>
+            <TouchableOpacity
+              style={[styles.formButton, styles.formButtonCancel]}
+              onPress={onCancel}
+              disabled={saving}
+            >
+              <Text style={[styles.formButtonText, styles.formButtonTextCancel]}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.formButton, styles.formButtonSubmit]}
+              onPress={handleSubmit}
+              disabled={saving}
+            >
+              <Text style={[styles.formButtonText, styles.formButtonTextSubmit]}>
+                {saving ? 'Saving…' : isEdit ? 'Save' : 'Add'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+}

@@ -1,0 +1,35 @@
+{
+  "name": "react-native-storage-inspector",
+  "version": "1.0.0",
+  "description": "Storage inspector for React Native and Expo: MMKV, AsyncStorage, Keychain, Expo Secure Store",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {},
+  "keywords": ["react-native", "expo", "storage", "inspector", "mmkv", "async-storage", "keychain", "secure-store", "debug"],
+  "author": "",
+  "license": "MIT",
+  "repository": { "type": "git", "url": "" },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "peerDependenciesMeta": {
+    "react-native-mmkv": { "optional": true },
+    "@react-native-async-storage/async-storage": { "optional": true },
+    "react-native-keychain": { "optional": true },
+    "expo-secure-store": { "optional": true }
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-native": "^0.72.0"
+  },
+  "files": ["src"],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    }
+  }
+}
