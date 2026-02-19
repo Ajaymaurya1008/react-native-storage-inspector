@@ -2,4 +2,5 @@ node_modules/
 dist/
 build/
 coverage/
+__mocks__/
 *.min.js

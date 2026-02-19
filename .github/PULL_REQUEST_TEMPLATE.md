@@ -11,7 +11,7 @@
 
 ## Checklist
 
-- [ ] I have run `npm run format` and `npm run build`
+- [ ] I have run `npm run format`, `npm test`, and `npm run build`
 - [ ] My commit messages follow [Conventional Commits](https://www.conventionalcommits.org/)
 - [ ] I have updated documentation if needed
 

@@ -6,12 +6,14 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
+    "test": "jest",
+    "test:coverage": "jest --coverage",
     "build": "tsup",
     "commitlint": "commitlint --from HEAD~1",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "prettier --check .",
-    "prepublishOnly": "npm run format:check && npm run build",
+    "prepublishOnly": "npm run format:check && npm test && npm run build",
     "prepare": "husky"
   },
   "keywords": [
@@ -25,16 +27,16 @@
     "secure-store",
     "debug"
   ],
-  "author": "",
+  "author": "Ajaymaurya1008",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YOUR_ORG/react-native-storage-inspector.git"
+    "url": "git+https://github.com/Ajaymaurya1008/react-native-storage-inspector.git"
   },
   "bugs": {
-    "url": "https://github.com/YOUR_ORG/react-native-storage-inspector/issues"
+    "url": "https://github.com/Ajaymaurya1008/react-native-storage-inspector/issues"
   },
-  "homepage": "https://github.com/YOUR_ORG/react-native-storage-inspector#readme",
+  "homepage": "https://github.com/Ajaymaurya1008/react-native-storage-inspector#readme",
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
@@ -56,10 +58,14 @@
   "devDependencies": {
     "@commitlint/cli": "^20.4.1",
     "@commitlint/config-conventional": "^20.4.1",
+    "@testing-library/react-native": "^13.3.3",
+    "@types/jest": "^30.0.0",
     "@types/react": "^18.0.0",
     "@types/react-native": "^0.72.0",
     "husky": "^9.1.7",
+    "jest": "^30.2.0",
     "prettier": "^3.8.1",
+    "ts-jest": "^29.4.6",
     "tsup": "^8.5.1",
     "typescript": "^5.0.0"
   },

@@ -83,14 +83,20 @@ interface IStorageAdapter {
 npm run format       # Format all files with Prettier
 npm run format:check # Check formatting (fails if any file is unformatted)
 npm run lint         # Same as format:check
+npm test             # Run tests
 npm run build        # Build src/ to dist/
 ```
 
-- **Formatting:** No auto-format. Run `npm run format` to fix. **Pre-commit** runs `format:check`; **pre-push** runs `format:check` and `build`.
+- **Formatting:** No auto-format. Run `npm run format` to fix. **Pre-commit** runs `format:check`; **pre-push** runs `format:check`, `test`, and `build`.
 - **Commits:** Use [Conventional Commits](https://www.conventionalcommits.org/) (enforced by `commit-msg` hook).
-- **Before publish:** `prepublishOnly` runs `format:check` then `build`; publish fails if any file is unformatted.
+- **Before publish:** `prepublishOnly` runs `format:check`, `test`, and `build`.
 
-See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for full guidelines. [Code of Conduct](docs/CODE_OF_CONDUCT.md).
+### Publishing
+
+1. Run `npm version patch` (or `minor`/`major`).
+2. Run `npm publish` (prepublishOnly will run checks and build).
+
+See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for full guidelines. [Code of Conduct](docs/CODE_OF_CONDUCT.md).
 
 For AI assistants: see [ai/PRIMER.md](ai/PRIMER.md).
 

@@ -3,30 +3,36 @@
 ## Layout
 
 ```
-src/
-├── index.ts              # Public API exports
-├── strings.ts            # All UI strings
-├── theme.ts              # Colors, visual tokens
-├── constants.ts          # LAYOUT (sizes, hitSlop, etc.)
-├── types.ts              # Shared types
-├── adapters/             # Storage backends
-│   ├── types.ts          # IStorageAdapter interface
-│   ├── mmkv.ts
-│   ├── async-storage.ts
-│   ├── keychain.ts
-│   └── secure-store.ts
-├── components/           # UI
-│   ├── StorageInspector.tsx  # Root component
-│   ├── StorageSection.tsx    # Per-storage section (tabs)
-│   ├── StorageList.tsx       # Key list
-│   ├── ItemForm.tsx          # Add/Edit form
-│   ├── ConfirmModal.tsx      # Delete confirmation
-│   ├── IconButton.tsx        # Reusable icon button
-│   ├── ItemRowActions.tsx    # Row action buttons
-│   ├── Icon.tsx              # Icon wrapper
-│   └── styles.ts             # Shared styles
-└── hooks/
-    └── useStorageItems.ts    # Load items for a section
+
+├── __tests__/              # Unit tests
+│   ├── mmkv.test.ts
+│   ├── async-storage.test.ts
+│   ├── strings.test.ts
+│   └── constants.test.ts
+└── src/
+    ├── index.ts            # Public API exports
+    ├── strings.ts          # All UI strings
+    ├── theme.ts            # Colors, visual tokens
+    ├── constants.ts        # LAYOUT (sizes, hitSlop, etc.)
+    ├── types.ts            # Shared types
+    ├── adapters/           # Storage backends
+    │   ├── types.ts        # IStorageAdapter interface
+    │   ├── mmkv.ts
+    │   ├── async-storage.ts
+    │   ├── keychain.ts
+    │   └── secure-store.ts
+    ├── components/         # UI
+    │   ├── StorageInspector.tsx   # Root component
+    │   ├── StorageSection.tsx     # Per-storage section (tabs)
+    │   ├── StorageList.tsx        # Key list
+    │   ├── ItemForm.tsx           # Add/Edit form
+    │   ├── ConfirmModal.tsx      # Delete confirmation
+    │   ├── IconButton.tsx        # Reusable icon button
+    │   ├── ItemRowActions.tsx    # Row action buttons
+    │   ├── Icon.tsx              # Icon wrapper
+    │   └── styles.ts             # Shared styles
+    └── hooks/
+        └── useStorageItems.ts    # Load items for a section
 ```
 
 ## Data Flow
