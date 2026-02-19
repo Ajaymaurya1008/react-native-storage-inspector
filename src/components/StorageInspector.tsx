@@ -17,9 +17,9 @@ import { StorageSection } from './StorageSection';
 import { Icon } from './Icon';
 import { styles } from './styles';
 import { theme } from '../theme';
+import { strings } from '../strings';
 
 export interface StorageInspectorProps {
-  onClose?: () => void;
   mmkvInstances?: Array<{
     getAllKeys(): string[];
     getString(k: string): string | undefined;
@@ -32,7 +32,6 @@ export interface StorageInspectorProps {
 }
 
 export function StorageInspector({
-  onClose,
   mmkvInstances = [],
   keychainKeys: keychainKeysProp,
   secureStoreKeys: secureStoreKeysProp,
@@ -42,7 +41,7 @@ export function StorageInspector({
   const [secureStoreKeysAdded, setSecureStoreKeysAdded] = useState<string[]>([]);
   const [refreshKey, setRefreshKey] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(0);
+  const [expandedIndices, setExpandedIndices] = useState<Set<number>>(() => new Set([0]));
 
   const keychainKeys = useMemo(
     () => [...(keychainKeysProp ?? []), ...keychainKeysAdded],
@@ -97,39 +96,9 @@ export function StorageInspector({
     setTimeout(() => setRefreshing(false), 400);
   };
 
-  const topInset =
-    Platform.OS === 'android'
-      ? (StatusBar.currentHeight ?? 24)
-      : 59;
-
   return (
-    <View style={[styles.container, { paddingTop: topInset }]}>
+    <View style={styles.container}>
       <View style={styles.content}>
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-            {onClose ? (
-              <TouchableOpacity
-                style={styles.headerButton}
-                onPress={onClose}
-                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-                activeOpacity={0.6}
-              >
-                <Icon
-                  name="chevronBack"
-                  size={28}
-                  tintColor={theme.colors.text}
-                />
-              </TouchableOpacity>
-            ) : (
-              <View style={styles.headerButton} />
-            )}
-          </View>
-          <View style={styles.headerCenter}>
-            <Text style={styles.headerTitle}>Device Storage</Text>
-          </View>
-          <View style={styles.headerRight} />
-        </View>
-
         {adapters.length > 0 ? (
           <>
             <ScrollView
@@ -151,10 +120,15 @@ export function StorageInspector({
                   keychainKeys={keychainKeysProp}
                   onKeychainKeyAdded={handleKeychainKeyAdded}
                   onSecureStoreKeyAdded={handleSecureStoreKeyAdded}
-                  expanded={expandedIndex === index}
-                  onToggleExpanded={() =>
-                    setExpandedIndex(expandedIndex === index ? null : index)
-                  }
+                  expanded={expandedIndices.has(index)}
+                  onToggleExpanded={() => {
+                    setExpandedIndices((prev) => {
+                      const next = new Set(prev);
+                      if (next.has(index)) next.delete(index);
+                      else next.add(index);
+                      return next;
+                    });
+                  }}
                   refreshTrigger={refreshKey}
                 />
               ))}
@@ -174,11 +148,7 @@ export function StorageInspector({
           </>
         ) : (
           <View style={styles.empty}>
-            <Text style={styles.emptyText}>
-              No storage adapter available. Install at least one of:
-              react-native-mmkv, @react-native-async-storage/async-storage,
-              react-native-keychain, expo-secure-store
-            </Text>
+            <Text style={styles.emptyText}>{strings.noAdapterAvailable}</Text>
           </View>
         )}
       </View>

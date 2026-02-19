@@ -68,6 +68,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.backgroundSecondary,
     marginTop: LAYOUT.padding,
     marginHorizontal: LAYOUT.padding,
+    borderRadius: LAYOUT.sectionRadius,
   },
   sectionHeaderLabel: {
     fontSize: 15,

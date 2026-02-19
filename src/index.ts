@@ -1,5 +1,6 @@
 export { StorageInspector } from "./components/StorageInspector";
 export type { StorageInspectorProps } from "./components/StorageInspector";
+export { strings } from "./strings";
 export { theme } from "./theme";
 export type { Theme } from "./theme";
 export type { StorageItem, IStorageAdapter } from "./adapters/types";

@@ -10,6 +10,7 @@ import type { StorageItem } from '../adapters/types';
 import { Icon } from './Icon';
 import { styles } from './styles';
 import { theme } from '../theme';
+import { strings } from '../strings';
 
 export interface ItemFormProps {
   visible: boolean;
@@ -44,7 +45,7 @@ export function ItemForm({
   const handleSubmit = async () => {
     const k = key.trim();
     if (!k) {
-      setError('Key is required');
+      setError(strings.keyRequired);
       return;
     }
     setSaving(true);
@@ -53,15 +54,15 @@ export function ItemForm({
       await onSave(k, value);
       onCancel();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Save failed');
+      setError(e instanceof Error ? e.message : strings.saveFailed);
     } finally {
       setSaving(false);
     }
   };
 
   const title = isEdit
-    ? `Edit ${editingItem?.key ?? ''}`
-    : `Add ${storageName} Item`;
+    ? strings.editItemTitle(editingItem?.key ?? '')
+    : strings.addItemTitle(storageName);
 
   return (
     <Modal
@@ -95,25 +96,25 @@ export function ItemForm({
             </TouchableOpacity>
           </View>
           <Text style={styles.formStorageType}>
-            Storage Type: {storageName}
+            {strings.storageTypeLabel(storageName)}
           </Text>
-          <Text style={styles.formLabel}>Key</Text>
+          <Text style={styles.formLabel}>{strings.keyLabel}</Text>
           <TextInput
             style={[styles.formInput, isEdit && styles.formInputDisabled]}
             value={key}
             onChangeText={setKey}
-            placeholder="Enter key"
+            placeholder={strings.enterKeyPlaceholder}
             placeholderTextColor={theme.colors.textMuted}
             editable={!isEdit}
             autoCapitalize="none"
             multiline
           />
-          <Text style={styles.formLabel}>Value</Text>
+          <Text style={styles.formLabel}>{strings.valueLabel}</Text>
           <TextInput
             style={styles.formInput}
             value={value}
             onChangeText={setValue}
-            placeholder="Enter value"
+            placeholder={strings.enterValuePlaceholder}
             placeholderTextColor={theme.colors.textMuted}
             multiline
             numberOfLines={3}
@@ -128,7 +129,7 @@ export function ItemForm({
               disabled={saving}
             >
               <Text style={[styles.formButtonText, styles.formButtonTextCancel]}>
-                Cancel
+                {strings.cancel}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -137,7 +138,7 @@ export function ItemForm({
               disabled={saving}
             >
               <Text style={[styles.formButtonText, styles.formButtonTextSubmit]}>
-                {saving ? 'Saving…' : isEdit ? 'Save' : 'Add'}
+                {saving ? strings.saving : isEdit ? strings.save : strings.add}
               </Text>
             </TouchableOpacity>
           </View>

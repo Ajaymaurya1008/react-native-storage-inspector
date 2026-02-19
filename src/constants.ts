@@ -13,5 +13,6 @@ export const LAYOUT = {
   iconButtonSize: 36,
   fabSize: 52,
   modalRadius: 16,
+  sectionRadius: 4,
   screenWidth: SCREEN_WIDTH,
 } as const;

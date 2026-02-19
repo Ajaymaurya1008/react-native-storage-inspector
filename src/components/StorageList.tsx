@@ -11,6 +11,7 @@ import type { StorageItem } from '../adapters/types';
 import { useStorageItems } from '../hooks/useStorageItems';
 import { ItemForm } from './ItemForm';
 import { styles } from './styles';
+import { strings } from '../strings';
 
 const VALUE_TRUNCATE = 60;
 
@@ -70,7 +71,7 @@ export function StorageList({
   if (!adapter || !adapter.isAvailable()) {
     return (
       <View style={styles.empty}>
-        <Text style={styles.emptyText}>This storage is not available.</Text>
+        <Text style={styles.emptyText}>{strings.storageNotAvailable}</Text>
       </View>
     );
   }
@@ -82,9 +83,7 @@ export function StorageList({
     <>
       {showKeychainHint ? (
         <View style={styles.keychainHint}>
-          <Text style={styles.keychainHintText}>
-            Keychain has no list API. Pass keychainKeys prop with known keys to inspect, or add a key below to create and edit items.
-          </Text>
+          <Text style={styles.keychainHintText}>{strings.keychainHintShort}</Text>
         </View>
       ) : null}
       {error ? (
@@ -94,7 +93,7 @@ export function StorageList({
       ) : null}
       {loading && !refreshing ? (
         <View style={styles.loading}>
-          <Text style={styles.loadingText}>Loading…</Text>
+          <Text style={styles.loadingText}>{strings.loading}</Text>
         </View>
       ) : (
         <FlatList
@@ -108,7 +107,7 @@ export function StorageList({
           ListEmptyComponent={
             !loading ? (
               <View style={styles.empty}>
-                <Text style={styles.emptyText}>No items</Text>
+                <Text style={styles.emptyText}>{strings.noItems}</Text>
               </View>
             ) : null
           }
@@ -124,7 +123,7 @@ export function StorageList({
                     {item.key}
                   </Text>
                   <Text style={styles.rowValue} numberOfLines={1}>
-                    {valuePreview || '(empty)'}
+                    {valuePreview || strings.emptyValue}
                   </Text>
                 </View>
                 <View style={styles.rowActions}>
@@ -132,14 +131,14 @@ export function StorageList({
                     style={styles.rowButton}
                     onPress={() => handleEdit(item)}
                   >
-                    <Text style={styles.rowButtonText}>Edit</Text>
+                    <Text style={styles.rowButtonText}>{strings.edit}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity
                     style={styles.rowButton}
                     onPress={() => handleDelete(item)}
                   >
                     <Text style={[styles.rowButtonText, styles.rowButtonDanger]}>
-                      Delete
+                      {strings.delete}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -149,7 +148,7 @@ export function StorageList({
         />
       )}
       <TouchableOpacity style={styles.addButton} onPress={handleAdd}>
-        <Text style={styles.addButtonText}>Add item</Text>
+        <Text style={styles.addButtonText}>{strings.addItem}</Text>
       </TouchableOpacity>
       <ItemForm
         visible={formVisible}

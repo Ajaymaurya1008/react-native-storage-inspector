@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Share } from 'react-native';
-import type { IStorageAdapter } from '../adapters/types';
-import type { StorageItem } from '../adapters/types';
-import { useStorageItems } from '../hooks/useStorageItems';
-import { ItemForm } from './ItemForm';
-import { ConfirmModal } from './ConfirmModal';
-import { Icon } from './Icon';
-import { styles } from './styles';
-import { theme } from '../theme';
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, Share } from "react-native";
+import type { IStorageAdapter } from "../adapters/types";
+import type { StorageItem } from "../adapters/types";
+import { useStorageItems } from "../hooks/useStorageItems";
+import { ItemForm } from "./ItemForm";
+import { ConfirmModal } from "./ConfirmModal";
+import { Icon } from "./Icon";
+import { styles } from "./styles";
+import { theme } from "../theme";
+import { strings } from "../strings";
 
 const ICON_SIZE = 20;
 const CHEVRON_SIZE = 24;
@@ -36,17 +37,17 @@ export function StorageSection({
 }: StorageSectionProps) {
   const { items, loading, error, refresh } = useStorageItems(adapter);
   const [expandedInternal, setExpandedInternal] = useState(defaultExpanded);
-  const expanded =
-    expandedProp !== undefined ? expandedProp : expandedInternal;
+  const expanded = expandedProp !== undefined ? expandedProp : expandedInternal;
 
   const handleToggleExpanded = () => {
     if (onToggleExpanded) onToggleExpanded();
     else setExpandedInternal((p: boolean) => !p);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (refreshTrigger !== undefined) refresh();
   }, [refreshTrigger, refresh]);
+
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
   const [formVisible, setFormVisible] = useState(false);
   const [editingItem, setEditingItem] = useState<StorageItem | null>(null);
@@ -66,10 +67,10 @@ export function StorageSection({
   const handleSave = async (key: string, value: string) => {
     const isNewKey = !editingItem || editingItem.key !== key;
     await adapter.setItem(key, value);
-    if (adapter.type === 'keychain' && isNewKey) {
+    if (adapter.type === "keychain" && isNewKey) {
       onKeychainKeyAdded?.(key);
     }
-    if (adapter.type === 'expo-secure-store' && isNewKey) {
+    if (adapter.type === "expo-secure-store" && isNewKey) {
       onSecureStoreKeyAdded?.(key);
     }
     await refresh();
@@ -102,8 +103,8 @@ export function StorageSection({
     }
   };
 
-  const isKeychain = adapter.type === 'keychain';
-  const isSecureStore = adapter.type === 'expo-secure-store';
+  const isKeychain = adapter.type === "keychain";
+  const isSecureStore = adapter.type === "expo-secure-store";
   const showKeychainHint =
     isKeychain && items.length === 0 && (keychainKeys?.length ?? 0) === 0;
   const showSecureStoreHint = isSecureStore && items.length === 0;
@@ -149,7 +150,7 @@ export function StorageSection({
           </TouchableOpacity>
           <View style={styles.iconSlot}>
             <Icon
-              name={expanded ? 'chevronUp' : 'chevronDown'}
+              name={expanded ? "chevronUp" : "chevronDown"}
               size={CHEVRON_SIZE}
               tintColor={theme.colors.text}
             />
@@ -162,16 +163,14 @@ export function StorageSection({
           {showKeychainHint ? (
             <View style={styles.keychainHint}>
               <Text style={styles.keychainHintText}>
-                Keychain has no list API. Pass keychainKeys prop with known keys,
-                or add a key using + above.
+                {strings.keychainHint}
               </Text>
             </View>
           ) : null}
           {showSecureStoreHint ? (
             <View style={styles.keychainHint}>
               <Text style={styles.keychainHintText}>
-                Secure Store has no list API. Pass secureStoreKeys prop with known
-                keys, or add a key using + above.
+                {strings.secureStoreHint}
               </Text>
             </View>
           ) : null}
@@ -182,7 +181,7 @@ export function StorageSection({
           ) : null}
           {loading ? (
             <View style={styles.loading}>
-              <Text style={styles.loadingText}>Loading…</Text>
+              <Text style={styles.loadingText}>{strings.loading}</Text>
             </View>
           ) : (
             items.map((item) => {
@@ -205,14 +204,11 @@ export function StorageSection({
                 >
                   <View style={styles.itemRowCollapsed}>
                     <View style={{ flex: 1 }}>
-                      <Text
-                        style={styles.itemKey}
-                        numberOfLines={1}
-                      >
+                      <Text style={styles.itemKey} numberOfLines={1}>
                         {item.key}
                       </Text>
                       <Text style={styles.itemChars}>
-                        {charCount} char{charCount !== 1 ? 's' : ''}
+                        {strings.charCount(charCount)}
                       </Text>
                     </View>
                     {!isItemExpanded ? (
@@ -222,41 +218,60 @@ export function StorageSection({
                           onPress={() => handleCopy(item)}
                           activeOpacity={0.6}
                         >
-                          <Icon name="copy" size={ICON_SIZE} tintColor={theme.colors.text} />
+                          <Icon
+                            name="copy"
+                            size={ICON_SIZE}
+                            tintColor={theme.colors.text}
+                          />
                         </TouchableOpacity>
                         <TouchableOpacity
                           style={styles.iconButton}
                           onPress={() => handleEdit(item)}
                           activeOpacity={0.6}
                         >
-                          <Icon name="edit" size={ICON_SIZE} tintColor={theme.colors.text} />
+                          <Icon
+                            name="edit"
+                            size={ICON_SIZE}
+                            tintColor={theme.colors.text}
+                          />
                         </TouchableOpacity>
                         <TouchableOpacity
                           style={styles.iconButton}
                           onPress={() => setDeleteItem(item)}
                           activeOpacity={0.6}
                         >
-                          <Icon name="trash" size={ICON_SIZE} tintColor={theme.colors.text} />
+                          <Icon
+                            name="trash"
+                            size={ICON_SIZE}
+                            tintColor={theme.colors.text}
+                          />
                         </TouchableOpacity>
                         <View style={styles.iconSlot}>
-                          <Icon name="chevronDown" size={CHEVRON_SIZE} tintColor={theme.colors.text} />
+                          <Icon
+                            name="chevronDown"
+                            size={CHEVRON_SIZE}
+                            tintColor={theme.colors.text}
+                          />
                         </View>
                       </View>
                     ) : (
                       <View style={styles.iconSlot}>
-                        <Icon name="chevronUp" size={CHEVRON_SIZE} tintColor={theme.colors.text} />
+                        <Icon
+                          name="chevronUp"
+                          size={CHEVRON_SIZE}
+                          tintColor={theme.colors.text}
+                        />
                       </View>
                     )}
                   </View>
                   {isItemExpanded && (
                     <View style={styles.itemRowExpanded}>
                       <View style={styles.valueBox}>
-                        <Text style={styles.valueBoxLabel}>Value</Text>
-                        <Text
-                          style={styles.valueBoxText}
-                          selectable
-                        >
-                          {item.value || '(empty)'}
+                        <Text style={styles.valueBoxLabel}>
+                          {strings.valueLabel}
+                        </Text>
+                        <Text style={styles.valueBoxText} selectable>
+                          {item.value || strings.emptyValue}
                         </Text>
                       </View>
                       <View style={styles.itemRowActions}>
@@ -265,21 +280,33 @@ export function StorageSection({
                           onPress={() => handleCopy(item)}
                           activeOpacity={0.6}
                         >
-                          <Icon name="copy" size={ICON_SIZE} tintColor={theme.colors.text} />
+                          <Icon
+                            name="copy"
+                            size={ICON_SIZE}
+                            tintColor={theme.colors.text}
+                          />
                         </TouchableOpacity>
                         <TouchableOpacity
                           style={styles.iconButton}
                           onPress={() => handleEdit(item)}
                           activeOpacity={0.6}
                         >
-                          <Icon name="edit" size={ICON_SIZE} tintColor={theme.colors.text} />
+                          <Icon
+                            name="edit"
+                            size={ICON_SIZE}
+                            tintColor={theme.colors.text}
+                          />
                         </TouchableOpacity>
                         <TouchableOpacity
                           style={styles.iconButton}
                           onPress={() => setDeleteItem(item)}
                           activeOpacity={0.6}
                         >
-                          <Icon name="trash" size={ICON_SIZE} tintColor={theme.colors.text} />
+                          <Icon
+                            name="trash"
+                            size={ICON_SIZE}
+                            tintColor={theme.colors.text}
+                          />
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -288,9 +315,12 @@ export function StorageSection({
               );
             })
           )}
-          {!loading && items.length === 0 && !showKeychainHint && !showSecureStoreHint ? (
+          {!loading &&
+          items.length === 0 &&
+          !showKeychainHint &&
+          !showSecureStoreHint ? (
             <View style={styles.empty}>
-              <Text style={styles.emptyText}>No items</Text>
+              <Text style={styles.emptyText}>{strings.noItems}</Text>
             </View>
           ) : null}
         </>
@@ -309,16 +339,16 @@ export function StorageSection({
 
       <ConfirmModal
         visible={deleteItem !== null}
-        title={`Delete ${deleteItem?.key ?? ''}?`}
-        message={`This will permanently delete the ${deleteItem?.key ?? ''} storage item. Do you wish to continue?`}
+        title={strings.deleteItemTitle(deleteItem?.key ?? "")}
+        message={strings.deleteItemMessage(deleteItem?.key ?? "")}
         onConfirm={handleDeleteItem}
         onCancel={() => setDeleteItem(null)}
       />
 
       <ConfirmModal
         visible={clearAllVisible}
-        title={`Clear All ${adapter.name}?`}
-        message={`This will permanently delete all ${items.length} ${adapter.name} items. Do you wish to continue?`}
+        title={strings.clearAllTitle(adapter.name)}
+        message={strings.clearAllMessage(items.length, adapter.name)}
         onConfirm={handleClearAll}
         onCancel={() => setClearAllVisible(false)}
       />

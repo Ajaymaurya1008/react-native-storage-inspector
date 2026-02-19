@@ -3,6 +3,7 @@ import { View, Text, Modal, TouchableOpacity } from "react-native";
 import { Icon } from "./Icon";
 import { styles } from "./styles";
 import { theme } from "../theme";
+import { strings } from "../strings";
 
 export interface ConfirmModalProps {
   visible: boolean;
@@ -19,8 +20,8 @@ export function ConfirmModal({
   visible,
   title,
   message,
-  confirmLabel = "Yes, delete",
-  cancelLabel = "No, keep it",
+  confirmLabel = strings.confirmDelete,
+  cancelLabel = strings.cancelKeep,
   danger = true,
   onConfirm,
   onCancel,
