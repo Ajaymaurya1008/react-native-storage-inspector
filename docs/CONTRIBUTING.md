@@ -17,9 +17,9 @@ Thank you for your interest in contributing! This document provides guidelines f
 
 The project uses [Husky](https://typicode.github.io/husky/) for Git hooks:
 
-- **pre-commit:** Runs `format:check` — commit is blocked if any file is unformatted.
+- **pre-commit:** Runs `format:check`; commit is blocked if any file is unformatted.
 - **commit-msg:** Validates commit messages with [commitlint](https://commitlint.js.org/) (conventional commits).
-- **pre-push:** Runs `format:check` and `build` — push is blocked if formatting fails or build fails.
+- **pre-push:** Runs `format:check` and `build`; push is blocked if formatting fails or build fails.
 
 ## Commit Messages
 
@@ -45,7 +45,7 @@ We use [Conventional Commits](https://www.conventionalcommits.org/) for clear an
 1. Create a branch from `main` for your work.
 2. Make your changes and ensure they pass `npm run format:check` and `npm run build`.
 3. Commit with conventional commit messages.
-4. Open a pull request with a clear description of the change.
+4. Open a pull request. Use the [PR template](../.github/PULL_REQUEST_TEMPLATE.md); it will pre-fill when you open a new PR on GitHub.
 5. Ensure CI passes (if applicable).
 
 ## Testing

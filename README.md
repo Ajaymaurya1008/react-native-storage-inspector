@@ -1,17 +1,17 @@
 # react-native-storage-inspector
 
-Storage inspector for React Native and Expo apps. Inspect and edit key-value data in MMKV, AsyncStorage, Keychain, and Expo Secure Store.
+react-native-storage-inspector is a plug-and-play developer tool that empowers you to browse, search, and edit all your app’s persisted data.
 
-**Use it as a full-page screen:** place `<StorageInspector />` on a page and it occupies the whole screen. No modal—the component fills its container.
+## Supported libraries
 
-## Supported storages
+Tabs appear only when the corresponding package is installed (optional peer dependencies).
 
-| Storage               | List keys                                  | Add / Edit / Delete | Expo Go        |
-| --------------------- | ------------------------------------------ | ------------------- | -------------- |
-| **MMKV**              | Yes                                        | Yes                 | No (dev build) |
-| **Async Storage**     | Yes                                        | Yes                 | Yes            |
-| **Keychain**          | Via `keychainKeys` prop or after adding    | Yes                 | No (dev build) |
-| **Expo Secure Store** | Via `secureStoreKeys` prop or after adding | Yes                 | Yes            |
+| Library                                                                      | Package                                     | Storage      |
+| ---------------------------------------------------------------------------- | ------------------------------------------- | ------------ |
+| [react-native-mmkv](https://github.com/mrousavy/react-native-mmkv)           | `react-native-mmkv`                         | MMKV         |
+| [Async Storage](https://github.com/react-native-async-storage/async-storage) | `@react-native-async-storage/async-storage` | AsyncStorage |
+| [react-native-keychain](https://github.com/oblador/react-native-keychain)    | `react-native-keychain`                     | Keychain     |
+| [expo-secure-store](https://docs.expo.dev/versions/latest/sdk/securestore/)  | `expo-secure-store`                         | Secure Store |
 
 ## Installation
 
@@ -28,52 +28,33 @@ npm install expo-secure-store
 
 ## Usage
 
-Use `StorageInspector` as a **full-page component**. Put it in a screen so it has full height (e.g. as the only child of a screen in your navigator, or inside a `View` with `flex: 1`).
+Use `StorageInspector` as a **full-page component**. It renders only the content area, no header, back button, or status bar. The consumer screen must handle those.
+
+Put it in a screen with `flex: 1`, and wrap with `SafeAreaView` (or your nav's safe area) so it respects status bar and notches.
 
 ```tsx
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { StorageInspector } from 'react-native-storage-inspector';
-import { MMKV } from 'react-native-mmkv'; // if you use MMKV
 
-const storage = new MMKV({ id: 'app-storage' });
-
-// As a dedicated screen (e.g. in React Navigation stack):
 export function StorageInspectorScreen() {
-  const navigation = useNavigation();
   return (
-    <View style={{ flex: 1 }}>
-      <StorageInspector
-        onClose={() => navigation.goBack()}
-        mmkvInstances={[storage]}
-        keychainKeys={['auth-token', 'user-prefs']}
-      />
-    </View>
-  );
-}
-
-// Or as the only content of a tab / root:
-export default function App() {
-  return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <StorageInspector />
-    </View>
+    </SafeAreaView>
   );
 }
 ```
 
-The component will fill the available space. Provide `onClose` if you want a back button (e.g. to pop the screen).
+The component fills its container. The consumer is responsible for header, back button, and status bar (via SafeAreaView or your navigation setup).
 
 ### Props
 
-| Prop              | Type                | Description                                                                                                  |
-| ----------------- | ------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `onClose`         | `() => void`        | Optional. If provided, a back button is shown and this is called when the user taps it (e.g. navigate back). |
-| `mmkvInstances`   | `MMKV[]`            | Optional. MMKV instances to inspect.                                                                         |
-| `keychainKeys`    | `string[]`          | Optional. Known Keychain keys to list (Keychain has no list API).                                            |
-| `secureStoreKeys` | `string[]`          | Optional. Known Secure Store keys to list (expo-secure-store has no list API).                               |
-| `customAdapters`  | `IStorageAdapter[]` | Optional. Custom adapters for other storages.                                                                |
-
-Tabs for Async Storage, Keychain, and Expo Secure Store appear only when the corresponding package is installed.
+| Prop              | Type                | Description                                                                                                                   |
+| ----------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `mmkvInstances`   | `MMKV[]`            | **Required for MMKV.** Pass your MMKV instances to inspect.                                                                   |
+| `secureStoreKeys` | `string[]`          | **Required for Secure Store.** Keys to list (no list API).                                                                    |
+| `keychainKeys`    | `string[]`          | Optional. Only for internet credentials (no list API). Generic passwords auto-discovered via `getAllGenericPasswordServices`. |
+| `customAdapters`  | `IStorageAdapter[]` | Optional. Custom adapters for other storages.                                                                                 |
 
 ## Expo
 
@@ -107,9 +88,11 @@ npm run build        # Build src/ to dist/
 
 - **Formatting:** No auto-format. Run `npm run format` to fix. **Pre-commit** runs `format:check`; **pre-push** runs `format:check` and `build`.
 - **Commits:** Use [Conventional Commits](https://www.conventionalcommits.org/) (enforced by `commit-msg` hook).
-- **Before publish:** `prepublishOnly` runs `format:check` then `build`—publish fails if any file is unformatted.
+- **Before publish:** `prepublishOnly` runs `format:check` then `build`; publish fails if any file is unformatted.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines.
+See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for full guidelines. [Code of Conduct](docs/CODE_OF_CONDUCT.md).
+
+For AI assistants: see [PRIMER.md](AI/PRIMER.md).
 
 ## License
 

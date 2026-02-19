@@ -14,3 +14,5 @@
 - [ ] I have run `npm run format` and `npm run build`
 - [ ] My commit messages follow [Conventional Commits](https://www.conventionalcommits.org/)
 - [ ] I have updated documentation if needed
+
+See [docs/CONTRIBUTING.md](../docs/CONTRIBUTING.md) for full guidelines.
