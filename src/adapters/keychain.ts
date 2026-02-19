@@ -2,8 +2,14 @@ import type { IStorageAdapter } from '@/adapters/types';
 
 type KeychainModule = {
   getAllGenericPasswordServices?(options?: object): Promise<string[]>;
-  getGenericPassword?(options?: { service?: string }): Promise<{ password: string } | false>;
-  setGenericPassword?(username: string, password: string, options?: { service?: string }): Promise<{ storage: string } | false>;
+  getGenericPassword?(options?: {
+    service?: string;
+  }): Promise<{ password: string } | false>;
+  setGenericPassword?(
+    username: string,
+    password: string,
+    options?: { service?: string }
+  ): Promise<{ storage: string } | false>;
   resetGenericPassword?(options?: { service?: string }): Promise<void>;
   setInternetCredentials(
     server: string,

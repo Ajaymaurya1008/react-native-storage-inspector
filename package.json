@@ -7,7 +7,12 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup",
-    "prepublishOnly": "npm run build"
+    "commitlint": "commitlint --from HEAD~1",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "prettier --check .",
+    "prepublishOnly": "npm run format:check && npm run build",
+    "prepare": "husky"
   },
   "keywords": [
     "react-native",
@@ -24,8 +29,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/YOUR_ORG/react-native-storage-inspector.git"
   },
+  "bugs": {
+    "url": "https://github.com/YOUR_ORG/react-native-storage-inspector/issues"
+  },
+  "homepage": "https://github.com/YOUR_ORG/react-native-storage-inspector#readme",
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
@@ -45,8 +54,12 @@
     }
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.4.1",
+    "@commitlint/config-conventional": "^20.4.1",
     "@types/react": "^18.0.0",
     "@types/react-native": "^0.72.0",
+    "husky": "^9.1.7",
+    "prettier": "^3.8.1",
     "tsup": "^8.5.1",
     "typescript": "^5.0.0"
   },

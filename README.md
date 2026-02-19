@@ -6,12 +6,12 @@ Storage inspector for React Native and Expo apps. Inspect and edit key-value dat
 
 ## Supported storages
 
-| Storage | List keys | Add / Edit / Delete | Expo Go |
-|--------|-----------|---------------------|--------|
-| **MMKV** | Yes | Yes | No (dev build) |
-| **Async Storage** | Yes | Yes | Yes |
-| **Keychain** | Via `keychainKeys` prop or after adding | Yes | No (dev build) |
-| **Expo Secure Store** | Via `secureStoreKeys` prop or after adding | Yes | Yes |
+| Storage               | List keys                                  | Add / Edit / Delete | Expo Go        |
+| --------------------- | ------------------------------------------ | ------------------- | -------------- |
+| **MMKV**              | Yes                                        | Yes                 | No (dev build) |
+| **Async Storage**     | Yes                                        | Yes                 | Yes            |
+| **Keychain**          | Via `keychainKeys` prop or after adding    | Yes                 | No (dev build) |
+| **Expo Secure Store** | Via `secureStoreKeys` prop or after adding | Yes                 | Yes            |
 
 ## Installation
 
@@ -65,13 +65,13 @@ The component will fill the available space. Provide `onClose` if you want a bac
 
 ### Props
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `onClose` | `() => void` | Optional. If provided, a back button is shown and this is called when the user taps it (e.g. navigate back). |
-| `mmkvInstances` | `MMKV[]` | Optional. MMKV instances to inspect. |
-| `keychainKeys` | `string[]` | Optional. Known Keychain keys to list (Keychain has no list API). |
-| `secureStoreKeys` | `string[]` | Optional. Known Secure Store keys to list (expo-secure-store has no list API). |
-| `customAdapters` | `IStorageAdapter[]` | Optional. Custom adapters for other storages. |
+| Prop              | Type                | Description                                                                                                  |
+| ----------------- | ------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `onClose`         | `() => void`        | Optional. If provided, a back button is shown and this is called when the user taps it (e.g. navigate back). |
+| `mmkvInstances`   | `MMKV[]`            | Optional. MMKV instances to inspect.                                                                         |
+| `keychainKeys`    | `string[]`          | Optional. Known Keychain keys to list (Keychain has no list API).                                            |
+| `secureStoreKeys` | `string[]`          | Optional. Known Secure Store keys to list (expo-secure-store has no list API).                               |
+| `customAdapters`  | `IStorageAdapter[]` | Optional. Custom adapters for other storages.                                                                |
 
 Tabs for Async Storage, Keychain, and Expo Secure Store appear only when the corresponding package is installed.
 
@@ -99,10 +99,17 @@ interface IStorageAdapter {
 ## Development
 
 ```bash
-npm run build
+npm run format       # Format all files with Prettier
+npm run format:check # Check formatting (fails if any file is unformatted)
+npm run lint         # Same as format:check
+npm run build        # Build src/ to dist/
 ```
 
-Builds `src/` to `dist/` with path aliases resolved. Run before publishing or when testing the package locally (e.g. with `file:../react-native-storage-inspector`).
+- **Formatting:** No auto-format. Run `npm run format` to fix. **Pre-commit** runs `format:check`; **pre-push** runs `format:check` and `build`.
+- **Commits:** Use [Conventional Commits](https://www.conventionalcommits.org/) (enforced by `commit-msg` hook).
+- **Before publish:** `prepublishOnly` runs `format:check` then `build`—publish fails if any file is unformatted.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines.
 
 ## License
 

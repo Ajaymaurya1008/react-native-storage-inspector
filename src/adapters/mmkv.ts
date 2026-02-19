@@ -7,7 +7,10 @@ type MMKVInstance = {
   delete(key: string): void;
 };
 
-export function createMMKVAdapter(instance: MMKVInstance, name?: string): IStorageAdapter {
+export function createMMKVAdapter(
+  instance: MMKVInstance,
+  name?: string
+): IStorageAdapter {
   return {
     type: 'mmkv',
     name: name ?? 'MMKV',

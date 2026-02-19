@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Modal } from 'react-native';
-import type { StorageItem } from "@/adapters/types";
-import { IconButton } from "@/components/IconButton";
-import { styles } from "@/components/styles";
-import { LAYOUT } from "@/constants";
-import { theme } from "@/theme";
-import { strings } from "@/strings";
+import type { StorageItem } from '@/adapters/types';
+import { IconButton } from '@/components/IconButton';
+import { styles } from '@/components/styles';
+import { LAYOUT } from '@/constants';
+import { theme } from '@/theme';
+import { strings } from '@/strings';
 
 export interface ItemFormProps {
   visible: boolean;
@@ -60,12 +60,7 @@ export function ItemForm({
     : strings.addItemTitle(storageName);
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="slide"
-      onRequestClose={onCancel}
-    >
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onCancel}>
       <View style={styles.formOverlay}>
         <TouchableOpacity
           style={{ flex: 1, width: '100%' }}

@@ -1,10 +1,10 @@
-import React from "react";
-import { View, Text, Modal, TouchableOpacity } from "react-native";
-import { IconButton } from "@/components/IconButton";
-import { styles } from "@/components/styles";
-import { LAYOUT } from "@/constants";
-import { theme } from "@/theme";
-import { strings } from "@/strings";
+import React from 'react';
+import { View, Text, Modal, TouchableOpacity } from 'react-native';
+import { IconButton } from '@/components/IconButton';
+import { styles } from '@/components/styles';
+import { LAYOUT } from '@/constants';
+import { theme } from '@/theme';
+import { strings } from '@/strings';
 
 export interface ConfirmModalProps {
   visible: boolean;
@@ -32,15 +32,10 @@ export function ConfirmModal({
   };
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="slide"
-      onRequestClose={onCancel}
-    >
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onCancel}>
       <View style={styles.confirmOverlay}>
         <TouchableOpacity
-          style={{ flex: 1, width: "100%" }}
+          style={{ flex: 1, width: '100%' }}
           activeOpacity={1}
           onPress={onCancel}
         />
@@ -62,12 +57,7 @@ export function ConfirmModal({
               style={[styles.confirmButton, styles.confirmButtonSecondary]}
               onPress={onCancel}
             >
-              <Text
-                style={[
-                  styles.confirmButtonText,
-                  styles.confirmButtonTextSecondary,
-                ]}
-              >
+              <Text style={[styles.confirmButtonText, styles.confirmButtonTextSecondary]}>
                 {cancelLabel}
               </Text>
             </TouchableOpacity>
@@ -81,9 +71,7 @@ export function ConfirmModal({
               <Text
                 style={[
                   styles.confirmButtonText,
-                  danger
-                    ? styles.confirmButtonTextDanger
-                    : styles.formButtonTextSubmit,
+                  danger ? styles.confirmButtonTextDanger : styles.formButtonTextSubmit,
                 ]}
               >
                 {confirmLabel}

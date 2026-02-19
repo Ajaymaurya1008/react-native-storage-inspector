@@ -50,10 +50,7 @@ export function StorageInspector({
 
     mmkvInstances.forEach((inst, i) => {
       list.push(
-        createMMKVAdapter(
-          inst,
-          mmkvInstances.length > 1 ? `MMKV ${i + 1}` : 'MMKV'
-        )
+        createMMKVAdapter(inst, mmkvInstances.length > 1 ? `MMKV ${i + 1}` : 'MMKV')
       );
     });
 
@@ -99,10 +96,7 @@ export function StorageInspector({
               keyboardShouldPersistTaps="handled"
               showsVerticalScrollIndicator
               refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={handleRefresh}
-                />
+                <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
               }
             >
               {adapters.map((adapter: IStorageAdapter, index: number) => (

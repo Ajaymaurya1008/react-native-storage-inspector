@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Share } from "react-native";
-import type { IStorageAdapter } from "@/adapters/types";
-import type { StorageItem } from "@/adapters/types";
-import { useStorageItems } from "@/hooks/useStorageItems";
-import { ItemForm } from "@/components/ItemForm";
-import { ConfirmModal } from "@/components/ConfirmModal";
-import { Icon } from "@/components/Icon";
-import { IconButton } from "@/components/IconButton";
-import { ItemRowActions } from "@/components/ItemRowActions";
-import { styles } from "@/components/styles";
-import { theme } from "@/theme";
-import { strings } from "@/strings";
-import { LAYOUT } from "@/constants";
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, Share } from 'react-native';
+import type { IStorageAdapter } from '@/adapters/types';
+import type { StorageItem } from '@/adapters/types';
+import { useStorageItems } from '@/hooks/useStorageItems';
+import { ItemForm } from '@/components/ItemForm';
+import { ConfirmModal } from '@/components/ConfirmModal';
+import { Icon } from '@/components/Icon';
+import { IconButton } from '@/components/IconButton';
+import { ItemRowActions } from '@/components/ItemRowActions';
+import { styles } from '@/components/styles';
+import { theme } from '@/theme';
+import { strings } from '@/strings';
+import { LAYOUT } from '@/constants';
 
 export interface StorageSectionProps {
   key?: React.Key;
@@ -67,10 +67,10 @@ export function StorageSection({
   const handleSave = async (key: string, value: string) => {
     const isNewKey = !editingItem || editingItem.key !== key;
     await adapter.setItem(key, value);
-    if (adapter.type === "keychain" && isNewKey) {
+    if (adapter.type === 'keychain' && isNewKey) {
       onKeychainKeyAdded?.(key);
     }
-    if (adapter.type === "expo-secure-store" && isNewKey) {
+    if (adapter.type === 'expo-secure-store' && isNewKey) {
       onSecureStoreKeyAdded?.(key);
     }
     await refresh();
@@ -103,8 +103,8 @@ export function StorageSection({
     }
   };
 
-  const isKeychain = adapter.type === "keychain";
-  const isSecureStore = adapter.type === "expo-secure-store";
+  const isKeychain = adapter.type === 'keychain';
+  const isSecureStore = adapter.type === 'expo-secure-store';
   const showKeychainHint =
     isKeychain && items.length === 0 && (keychainKeys?.length ?? 0) === 0;
   const showSecureStoreHint = isSecureStore && items.length === 0;
@@ -133,7 +133,7 @@ export function StorageSection({
           />
           <View style={styles.iconSlot}>
             <Icon
-              name={expanded ? "chevronUp" : "chevronDown"}
+              name={expanded ? 'chevronUp' : 'chevronDown'}
               size={LAYOUT.chevronSize}
               tintColor={theme.colors.text}
             />
@@ -145,16 +145,12 @@ export function StorageSection({
         <>
           {showKeychainHint ? (
             <View style={styles.keychainHint}>
-              <Text style={styles.keychainHintText}>
-                {strings.keychainHint}
-              </Text>
+              <Text style={styles.keychainHintText}>{strings.keychainHint}</Text>
             </View>
           ) : null}
           {showSecureStoreHint ? (
             <View style={styles.keychainHint}>
-              <Text style={styles.keychainHintText}>
-                {strings.secureStoreHint}
-              </Text>
+              <Text style={styles.keychainHintText}>{strings.secureStoreHint}</Text>
             </View>
           ) : null}
           {error ? (
@@ -190,9 +186,7 @@ export function StorageSection({
                       <Text style={styles.itemKey} numberOfLines={1}>
                         {item.key}
                       </Text>
-                      <Text style={styles.itemChars}>
-                        {strings.charCount(charCount)}
-                      </Text>
+                      <Text style={styles.itemChars}>{strings.charCount(charCount)}</Text>
                     </View>
                     {!isItemExpanded ? (
                       <ItemRowActions
@@ -216,9 +210,7 @@ export function StorageSection({
                   {isItemExpanded && (
                     <View style={styles.itemRowExpanded}>
                       <View style={styles.valueBox}>
-                        <Text style={styles.valueBoxLabel}>
-                          {strings.valueLabel}
-                        </Text>
+                        <Text style={styles.valueBoxLabel}>{strings.valueLabel}</Text>
                         <Text style={styles.valueBoxText} selectable>
                           {item.value || strings.emptyValue}
                         </Text>
@@ -235,10 +227,7 @@ export function StorageSection({
               );
             })
           )}
-          {!loading &&
-          items.length === 0 &&
-          !showKeychainHint &&
-          !showSecureStoreHint ? (
+          {!loading && items.length === 0 && !showKeychainHint && !showSecureStoreHint ? (
             <View style={styles.empty}>
               <Text style={styles.emptyText}>{strings.noItems}</Text>
             </View>
@@ -259,8 +248,8 @@ export function StorageSection({
 
       <ConfirmModal
         visible={deleteItem !== null}
-        title={strings.deleteItemTitle(deleteItem?.key ?? "")}
-        message={strings.deleteItemMessage(deleteItem?.key ?? "")}
+        title={strings.deleteItemTitle(deleteItem?.key ?? '')}
+        message={strings.deleteItemMessage(deleteItem?.key ?? '')}
         onConfirm={handleDeleteItem}
         onCancel={() => setDeleteItem(null)}
       />

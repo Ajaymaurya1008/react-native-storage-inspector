@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  RefreshControl,
-} from 'react-native';
-import type { IStorageAdapter } from "@/adapters/types";
-import type { StorageItem } from "@/adapters/types";
-import { useStorageItems } from "@/hooks/useStorageItems";
-import { ItemForm } from "@/components/ItemForm";
-import { styles } from "@/components/styles";
-import { strings } from "@/strings";
+import { View, Text, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
+import type { IStorageAdapter } from '@/adapters/types';
+import type { StorageItem } from '@/adapters/types';
+import { useStorageItems } from '@/hooks/useStorageItems';
+import { ItemForm } from '@/components/ItemForm';
+import { styles } from '@/components/styles';
+import { strings } from '@/strings';
 
 const VALUE_TRUNCATE = 60;
 
@@ -77,7 +71,8 @@ export function StorageList({
   }
 
   const isKeychain = adapter.type === 'keychain';
-  const showKeychainHint = isKeychain && items.length === 0 && (keychainKeys?.length ?? 0) === 0;
+  const showKeychainHint =
+    isKeychain && items.length === 0 && (keychainKeys?.length ?? 0) === 0;
 
   return (
     <>

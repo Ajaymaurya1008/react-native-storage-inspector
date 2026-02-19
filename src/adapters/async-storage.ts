@@ -1,4 +1,4 @@
-import type { IStorageAdapter } from "@/adapters/types";
+import type { IStorageAdapter } from '@/adapters/types';
 
 type AsyncStorageModule = {
   getAllKeys(): Promise<string[]>;
@@ -12,7 +12,7 @@ let asyncStorage: AsyncStorageModule | null = null;
 function getAsyncStorage() {
   if (asyncStorage) return asyncStorage;
   try {
-    asyncStorage = require("@react-native-async-storage/async-storage").default;
+    asyncStorage = require('@react-native-async-storage/async-storage').default;
     return asyncStorage;
   } catch {
     return null;
@@ -21,8 +21,8 @@ function getAsyncStorage() {
 
 export function createAsyncStorageAdapter(): IStorageAdapter {
   return {
-    type: "async-storage",
-    name: "Async Storage",
+    type: 'async-storage',
+    name: 'Async Storage',
     async getAllKeys(): Promise<string[]> {
       const storage = getAsyncStorage();
       if (!storage) return [];
@@ -35,12 +35,12 @@ export function createAsyncStorageAdapter(): IStorageAdapter {
     },
     async setItem(key: string, value: string): Promise<void> {
       const storage = getAsyncStorage();
-      if (!storage) throw new Error("AsyncStorage is not available");
+      if (!storage) throw new Error('AsyncStorage is not available');
       await storage.setItem(key, value);
     },
     async removeItem(key: string): Promise<void> {
       const storage = getAsyncStorage();
-      if (!storage) throw new Error("AsyncStorage is not available");
+      if (!storage) throw new Error('AsyncStorage is not available');
       await storage.removeItem(key);
     },
     isAvailable(): boolean {
