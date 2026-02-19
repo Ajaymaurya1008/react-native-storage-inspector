@@ -1,4 +1,4 @@
-import type { IStorageAdapter } from './types';
+import type { IStorageAdapter } from '@/adapters/types';
 
 type MMKVInstance = {
   getAllKeys(): string[];

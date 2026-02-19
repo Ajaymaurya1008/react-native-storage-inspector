@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
-import type { IStorageAdapter } from '../adapters/types';
-import type { StorageItem } from '../adapters/types';
+import type { IStorageAdapter } from '@/adapters/types';
+import type { StorageItem } from '@/adapters/types';
 
 export function useStorageItems(adapter: IStorageAdapter | null): {
   items: StorageItem[];

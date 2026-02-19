@@ -96,6 +96,14 @@ interface IStorageAdapter {
 }
 ```
 
+## Development
+
+```bash
+npm run build
+```
+
+Builds `src/` to `dist/` with path aliases resolved. Run before publishing or when testing the package locally (e.g. with `file:../react-native-storage-inspector`).
+
 ## License
 
 MIT

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet, TextStyle } from 'react-native';
-import { theme } from '../theme';
+import { theme } from '@/theme';
 
 const GLYPHS: Record<string, string> = {
   chevronBack: '‹',

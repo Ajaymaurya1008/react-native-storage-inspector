@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Modal } from 'react-native';
-import type { StorageItem } from '../adapters/types';
-import { IconButton } from './IconButton';
-import { styles } from './styles';
-import { LAYOUT } from '../constants';
-import { theme } from '../theme';
-import { strings } from '../strings';
+import type { StorageItem } from "@/adapters/types";
+import { IconButton } from "@/components/IconButton";
+import { styles } from "@/components/styles";
+import { LAYOUT } from "@/constants";
+import { theme } from "@/theme";
+import { strings } from "@/strings";
 
 export interface ItemFormProps {
   visible: boolean;

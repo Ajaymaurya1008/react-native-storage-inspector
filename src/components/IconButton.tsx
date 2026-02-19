@@ -1,10 +1,10 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
-import type { IconName } from './Icon';
-import { Icon } from './Icon';
-import { theme } from '../theme';
-import { LAYOUT } from '../constants';
-import { styles as sharedStyles } from './styles';
+import type { IconName } from '@/components/Icon';
+import { Icon } from '@/components/Icon';
+import { theme } from '@/theme';
+import { LAYOUT } from '@/constants';
+import { styles as sharedStyles } from '@/components/styles';
 
 export interface IconButtonProps {
   name: IconName;

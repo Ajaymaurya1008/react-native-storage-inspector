@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text, Modal, TouchableOpacity } from "react-native";
-import { IconButton } from "./IconButton";
-import { styles } from "./styles";
-import { LAYOUT } from "../constants";
-import { theme } from "../theme";
-import { strings } from "../strings";
+import { IconButton } from "@/components/IconButton";
+import { styles } from "@/components/styles";
+import { LAYOUT } from "@/constants";
+import { theme } from "@/theme";
+import { strings } from "@/strings";
 
 export interface ConfirmModalProps {
   visible: boolean;

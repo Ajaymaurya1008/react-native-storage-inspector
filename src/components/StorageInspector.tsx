@@ -1,15 +1,15 @@
 import React, { useMemo, useState } from 'react';
 import { View, Text, ScrollView, RefreshControl } from 'react-native';
-import type { IStorageAdapter } from '../adapters/types';
-import { createMMKVAdapter } from '../adapters/mmkv';
-import { createAsyncStorageAdapter } from '../adapters/async-storage';
-import { createKeychainAdapter } from '../adapters/keychain';
-import { createSecureStoreAdapter } from '../adapters/secure-store';
-import { StorageSection } from './StorageSection';
-import { IconButton } from './IconButton';
-import { styles } from './styles';
-import { theme } from '../theme';
-import { strings } from '../strings';
+import type { IStorageAdapter } from '@/adapters/types';
+import { createMMKVAdapter } from '@/adapters/mmkv';
+import { createAsyncStorageAdapter } from '@/adapters/async-storage';
+import { createKeychainAdapter } from '@/adapters/keychain';
+import { createSecureStoreAdapter } from '@/adapters/secure-store';
+import { StorageSection } from '@/components/StorageSection';
+import { IconButton } from '@/components/IconButton';
+import { styles } from '@/components/styles';
+import { theme } from '@/theme';
+import { strings } from '@/strings';
 
 export interface StorageInspectorProps {
   mmkvInstances?: Array<{

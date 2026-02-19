@@ -1,12 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
-import type { StorageItem } from '../adapters/types';
-import type { IconName } from './Icon';
-import { Icon } from './Icon';
-import { IconButton } from './IconButton';
-import { styles } from './styles';
-import { theme } from '../theme';
-import { LAYOUT } from '../constants';
+import type { StorageItem } from '@/adapters/types';
+import { Icon } from '@/components/Icon';
+import { IconButton } from '@/components/IconButton';
+import { styles } from '@/components/styles';
+import { theme } from '@/theme';
+import { LAYOUT } from '@/constants';
 
 export interface ItemRowActionsProps {
   item: StorageItem;

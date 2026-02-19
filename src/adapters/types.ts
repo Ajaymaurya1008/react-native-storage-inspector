@@ -1,4 +1,4 @@
-import type { StorageType } from '../types';
+import type { StorageType } from '@/types';
 
 export interface StorageItem {
   key: string;

@@ -6,12 +6,12 @@ import {
   TouchableOpacity,
   RefreshControl,
 } from 'react-native';
-import type { IStorageAdapter } from '../adapters/types';
-import type { StorageItem } from '../adapters/types';
-import { useStorageItems } from '../hooks/useStorageItems';
-import { ItemForm } from './ItemForm';
-import { styles } from './styles';
-import { strings } from '../strings';
+import type { IStorageAdapter } from "@/adapters/types";
+import type { StorageItem } from "@/adapters/types";
+import { useStorageItems } from "@/hooks/useStorageItems";
+import { ItemForm } from "@/components/ItemForm";
+import { styles } from "@/components/styles";
+import { strings } from "@/strings";
 
 const VALUE_TRUNCATE = 60;
 

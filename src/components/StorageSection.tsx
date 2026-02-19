@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Share } from "react-native";
-import type { IStorageAdapter } from "../adapters/types";
-import type { StorageItem } from "../adapters/types";
-import { useStorageItems } from "../hooks/useStorageItems";
-import { ItemForm } from "./ItemForm";
-import { ConfirmModal } from "./ConfirmModal";
-import { Icon } from "./Icon";
-import { IconButton } from "./IconButton";
-import { ItemRowActions } from "./ItemRowActions";
-import { styles } from "./styles";
-import { theme } from "../theme";
-import { strings } from "../strings";
-import { LAYOUT } from "../constants";
+import type { IStorageAdapter } from "@/adapters/types";
+import type { StorageItem } from "@/adapters/types";
+import { useStorageItems } from "@/hooks/useStorageItems";
+import { ItemForm } from "@/components/ItemForm";
+import { ConfirmModal } from "@/components/ConfirmModal";
+import { Icon } from "@/components/Icon";
+import { IconButton } from "@/components/IconButton";
+import { ItemRowActions } from "@/components/ItemRowActions";
+import { styles } from "@/components/styles";
+import { theme } from "@/theme";
+import { strings } from "@/strings";
+import { LAYOUT } from "@/constants";
 
 export interface StorageSectionProps {
   key?: React.Key;
