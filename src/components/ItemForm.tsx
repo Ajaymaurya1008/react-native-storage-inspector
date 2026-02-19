@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Modal,
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Modal } from 'react-native';
 import type { StorageItem } from '../adapters/types';
-import { Icon } from './Icon';
+import { IconButton } from './IconButton';
 import { styles } from './styles';
+import { LAYOUT } from '../constants';
 import { theme } from '../theme';
 import { strings } from '../strings';
 
@@ -82,18 +77,14 @@ export function ItemForm({
             <Text style={styles.formTitle} numberOfLines={1}>
               {title}
             </Text>
-            <TouchableOpacity
-              style={styles.formCloseButton}
+            <IconButton
+              name="close"
               onPress={onCancel}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-              activeOpacity={0.6}
-            >
-              <Icon
-                name="close"
-                size={24}
-                tintColor={theme.colors.textSecondary}
-              />
-            </TouchableOpacity>
+              size={24}
+              tintColor={theme.colors.textSecondary}
+              style={styles.formCloseButton}
+              hitSlop={LAYOUT.hitSlopLarge}
+            />
           </View>
           <Text style={styles.formStorageType}>
             {strings.storageTypeLabel(storageName)}

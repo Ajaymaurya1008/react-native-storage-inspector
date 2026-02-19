@@ -1,20 +1,12 @@
 import React, { useMemo, useState } from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Platform,
-  StatusBar,
-  RefreshControl,
-} from 'react-native';
+import { View, Text, ScrollView, RefreshControl } from 'react-native';
 import type { IStorageAdapter } from '../adapters/types';
 import { createMMKVAdapter } from '../adapters/mmkv';
 import { createAsyncStorageAdapter } from '../adapters/async-storage';
 import { createKeychainAdapter } from '../adapters/keychain';
 import { createSecureStoreAdapter } from '../adapters/secure-store';
 import { StorageSection } from './StorageSection';
-import { Icon } from './Icon';
+import { IconButton } from './IconButton';
 import { styles } from './styles';
 import { theme } from '../theme';
 import { strings } from '../strings';
@@ -134,17 +126,14 @@ export function StorageInspector({
               ))}
             </ScrollView>
 
-            <TouchableOpacity
-              style={styles.fab}
+            <IconButton
+              name="refresh"
               onPress={handleRefresh}
+              size={24}
+              tintColor={theme.colors.inverted}
+              style={styles.fab}
               activeOpacity={0.85}
-            >
-              <Icon
-                name="refresh"
-                size={24}
-                tintColor={theme.colors.inverted}
-              />
-            </TouchableOpacity>
+            />
           </>
         ) : (
           <View style={styles.empty}>

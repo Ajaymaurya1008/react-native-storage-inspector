@@ -6,12 +6,12 @@ import { useStorageItems } from "../hooks/useStorageItems";
 import { ItemForm } from "./ItemForm";
 import { ConfirmModal } from "./ConfirmModal";
 import { Icon } from "./Icon";
+import { IconButton } from "./IconButton";
+import { ItemRowActions } from "./ItemRowActions";
 import { styles } from "./styles";
 import { theme } from "../theme";
 import { strings } from "../strings";
-
-const ICON_SIZE = 20;
-const CHEVRON_SIZE = 24;
+import { LAYOUT } from "../constants";
 
 export interface StorageSectionProps {
   key?: React.Key;
@@ -125,33 +125,16 @@ export function StorageSection({
           </Text>
         </View>
         <View style={styles.storageRowActions}>
-          <TouchableOpacity
-            style={styles.iconButton}
-            onPress={handleAdd}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            activeOpacity={0.6}
-          >
-            <Icon name="plus" size={ICON_SIZE} tintColor={theme.colors.text} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.iconButton}
+          <IconButton name="plus" onPress={handleAdd} />
+          <IconButton
+            name="trash"
             onPress={() => items.length > 0 && setClearAllVisible(true)}
             disabled={items.length === 0}
-            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
-            activeOpacity={0.6}
-          >
-            <Icon
-              name="trash"
-              size={ICON_SIZE}
-              tintColor={
-                items.length === 0 ? theme.colors.textMuted : theme.colors.text
-              }
-            />
-          </TouchableOpacity>
+          />
           <View style={styles.iconSlot}>
             <Icon
               name={expanded ? "chevronUp" : "chevronDown"}
-              size={CHEVRON_SIZE}
+              size={LAYOUT.chevronSize}
               tintColor={theme.colors.text}
             />
           </View>
@@ -212,53 +195,19 @@ export function StorageSection({
                       </Text>
                     </View>
                     {!isItemExpanded ? (
-                      <View style={styles.itemRowActions}>
-                        <TouchableOpacity
-                          style={styles.iconButton}
-                          onPress={() => handleCopy(item)}
-                          activeOpacity={0.6}
-                        >
-                          <Icon
-                            name="copy"
-                            size={ICON_SIZE}
-                            tintColor={theme.colors.text}
-                          />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={styles.iconButton}
-                          onPress={() => handleEdit(item)}
-                          activeOpacity={0.6}
-                        >
-                          <Icon
-                            name="edit"
-                            size={ICON_SIZE}
-                            tintColor={theme.colors.text}
-                          />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={styles.iconButton}
-                          onPress={() => setDeleteItem(item)}
-                          activeOpacity={0.6}
-                        >
-                          <Icon
-                            name="trash"
-                            size={ICON_SIZE}
-                            tintColor={theme.colors.text}
-                          />
-                        </TouchableOpacity>
-                        <View style={styles.iconSlot}>
-                          <Icon
-                            name="chevronDown"
-                            size={CHEVRON_SIZE}
-                            tintColor={theme.colors.text}
-                          />
-                        </View>
-                      </View>
+                      <ItemRowActions
+                        item={item}
+                        onCopy={handleCopy}
+                        onEdit={handleEdit}
+                        onDelete={setDeleteItem}
+                        showChevron
+                        chevronDirection="down"
+                      />
                     ) : (
                       <View style={styles.iconSlot}>
                         <Icon
                           name="chevronUp"
-                          size={CHEVRON_SIZE}
+                          size={LAYOUT.chevronSize}
                           tintColor={theme.colors.text}
                         />
                       </View>
@@ -274,41 +223,12 @@ export function StorageSection({
                           {item.value || strings.emptyValue}
                         </Text>
                       </View>
-                      <View style={styles.itemRowActions}>
-                        <TouchableOpacity
-                          style={styles.iconButton}
-                          onPress={() => handleCopy(item)}
-                          activeOpacity={0.6}
-                        >
-                          <Icon
-                            name="copy"
-                            size={ICON_SIZE}
-                            tintColor={theme.colors.text}
-                          />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={styles.iconButton}
-                          onPress={() => handleEdit(item)}
-                          activeOpacity={0.6}
-                        >
-                          <Icon
-                            name="edit"
-                            size={ICON_SIZE}
-                            tintColor={theme.colors.text}
-                          />
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={styles.iconButton}
-                          onPress={() => setDeleteItem(item)}
-                          activeOpacity={0.6}
-                        >
-                          <Icon
-                            name="trash"
-                            size={ICON_SIZE}
-                            tintColor={theme.colors.text}
-                          />
-                        </TouchableOpacity>
-                      </View>
+                      <ItemRowActions
+                        item={item}
+                        onCopy={handleCopy}
+                        onEdit={handleEdit}
+                        onDelete={setDeleteItem}
+                      />
                     </View>
                   )}
                 </TouchableOpacity>

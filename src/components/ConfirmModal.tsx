@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Text, Modal, TouchableOpacity } from "react-native";
-import { Icon } from "./Icon";
+import { IconButton } from "./IconButton";
 import { styles } from "./styles";
+import { LAYOUT } from "../constants";
 import { theme } from "../theme";
 import { strings } from "../strings";
 
@@ -46,18 +47,14 @@ export function ConfirmModal({
         <View style={styles.confirmModal}>
           <View style={styles.confirmHeader}>
             <Text style={styles.confirmTitle}>{title}</Text>
-            <TouchableOpacity
-              style={styles.formCloseButton}
+            <IconButton
+              name="close"
               onPress={onCancel}
-              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-              activeOpacity={0.6}
-            >
-              <Icon
-                name="close"
-                size={24}
-                tintColor={theme.colors.textSecondary}
-              />
-            </TouchableOpacity>
+              size={24}
+              tintColor={theme.colors.textSecondary}
+              style={styles.formCloseButton}
+              hitSlop={LAYOUT.hitSlopLarge}
+            />
           </View>
           <Text style={styles.confirmMessage}>{message}</Text>
           <View style={styles.confirmActions}>
