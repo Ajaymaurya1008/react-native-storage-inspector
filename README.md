@@ -92,7 +92,7 @@ npm run build        # Build src/ to dist/
 
 See [CONTRIBUTING.md](docs/CONTRIBUTING.md) for full guidelines. [Code of Conduct](docs/CODE_OF_CONDUCT.md).
 
-For AI assistants: see [PRIMER.md](AI/PRIMER.md).
+For AI assistants: see [ai/PRIMER.md](ai/PRIMER.md).
 
 ## License
 
