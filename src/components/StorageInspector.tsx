@@ -2,9 +2,15 @@ import React, { useMemo, useState } from 'react';
 import { View, Text, ScrollView, RefreshControl } from 'react-native';
 import type { IStorageAdapter } from '@/adapters/types';
 import { createMMKVAdapter } from '@/adapters/mmkv';
-import { createAsyncStorageAdapter } from '@/adapters/async-storage';
-import { createKeychainAdapter } from '@/adapters/keychain';
-import { createSecureStoreAdapter } from '@/adapters/secure-store';
+import {
+  createAsyncStorageAdapter,
+  type AsyncStorageModule,
+} from '@/adapters/async-storage';
+import { createKeychainAdapter, type KeychainModule } from '@/adapters/keychain';
+import {
+  createSecureStoreAdapter,
+  type SecureStoreModule,
+} from '@/adapters/secure-store';
 import { StorageSection } from '@/components/StorageSection';
 import { IconButton } from '@/components/IconButton';
 import { styles } from '@/components/styles';
@@ -18,15 +24,24 @@ export interface StorageInspectorProps {
     set(k: string, v: string | number | boolean): void;
     delete(k: string): void;
   }>;
+  /** Pass AsyncStorage to avoid Metro "unknown module" in Expo. */
+  asyncStorageInstance?: AsyncStorageModule | null;
   keychainKeys?: string[];
+  /** Pass Keychain module to avoid Metro "unknown module" in Expo. */
+  keychainInstance?: KeychainModule | null;
   secureStoreKeys?: string[];
+  /** Pass SecureStore module to avoid Metro "unknown module" in Expo. */
+  secureStoreInstance?: SecureStoreModule | null;
   customAdapters?: IStorageAdapter[];
 }
 
 export function StorageInspector({
   mmkvInstances = [],
+  asyncStorageInstance,
   keychainKeys: keychainKeysProp,
+  keychainInstance,
   secureStoreKeys: secureStoreKeysProp,
+  secureStoreInstance,
   customAdapters = [],
 }: StorageInspectorProps) {
   const [keychainKeysAdded, setKeychainKeysAdded] = useState<string[]>([]);
@@ -54,18 +69,29 @@ export function StorageInspector({
       );
     });
 
-    const asyncAdapter = createAsyncStorageAdapter();
+    const asyncAdapter = createAsyncStorageAdapter(asyncStorageInstance);
     if (asyncAdapter.isAvailable()) list.push(asyncAdapter);
 
-    const keychainAdapter = createKeychainAdapter(keychainKeys);
+    const keychainAdapter = createKeychainAdapter(keychainKeys, keychainInstance);
     if (keychainAdapter.isAvailable()) list.push(keychainAdapter);
 
-    const secureStoreAdapter = createSecureStoreAdapter(secureStoreKeys);
+    const secureStoreAdapter = createSecureStoreAdapter(
+      secureStoreKeys,
+      secureStoreInstance
+    );
     if (secureStoreAdapter.isAvailable()) list.push(secureStoreAdapter);
 
     list.push(...customAdapters);
     return list;
-  }, [mmkvInstances, keychainKeys, secureStoreKeys, customAdapters]);
+  }, [
+    mmkvInstances,
+    asyncStorageInstance,
+    keychainKeys,
+    keychainInstance,
+    secureStoreKeys,
+    secureStoreInstance,
+    customAdapters,
+  ]);
 
   const handleKeychainKeyAdded = (key: string) => {
     setKeychainKeysAdded((prev: string[]) =>

@@ -1,6 +1,10 @@
 import type { IStorageAdapter } from '@/adapters/types';
 
-type KeychainModule = {
+/**
+ * Keychain-compatible module. Pass your keychain instance to avoid Metro
+ * "unknown module" errors in Expo.
+ */
+export type KeychainModule = {
   getAllGenericPasswordServices?(options?: object): Promise<string[]>;
   getGenericPassword?(options?: {
     service?: string;
@@ -25,26 +29,29 @@ type KeychainModule = {
 
 let keychain: KeychainModule | null = null;
 
-function getKeychain(): KeychainModule | null {
-  if (keychain) return keychain;
+function getKeychainFromRequire(): KeychainModule | null {
   try {
-    keychain = require('react-native-keychain');
-    return keychain;
+    return require('react-native-keychain') as KeychainModule;
   } catch {
     return null;
   }
 }
 
 /**
- * Keychain adapter. Auto-discovers keys via getAllGenericPasswordServices() (generic passwords).
- * Pass knownKeys only if you also store data with setInternetCredentials – those cannot be listed.
+ * Keychain adapter. Pass the keychain instance for reliable bundling in Expo:
+ * @example import * as Keychain from 'react-native-keychain';
+ * createKeychainAdapter([], Keychain)
  */
-export function createKeychainAdapter(knownKeys: string[] = []): IStorageAdapter {
+export function createKeychainAdapter(
+  knownKeys: string[] = [],
+  instance?: KeychainModule | null
+): IStorageAdapter {
+  const getKc = () => instance ?? (keychain ??= getKeychainFromRequire());
   return {
     type: 'keychain',
     name: 'Keychain',
     async getAllKeys(): Promise<string[]> {
-      const kc = getKeychain();
+      const kc = getKc();
       if (!kc) return [...knownKeys];
 
       const genericServices: string[] = [];
@@ -61,7 +68,7 @@ export function createKeychainAdapter(knownKeys: string[] = []): IStorageAdapter
       return Array.from(merged);
     },
     async getItem(key: string): Promise<string | null> {
-      const kc = getKeychain();
+      const kc = getKc();
       if (!kc) return null;
 
       if (typeof kc.getGenericPassword === 'function') {
@@ -79,7 +86,7 @@ export function createKeychainAdapter(knownKeys: string[] = []): IStorageAdapter
       return creds?.password ?? null;
     },
     async setItem(key: string, value: string): Promise<void> {
-      const kc = getKeychain();
+      const kc = getKc();
       if (!kc) throw new Error('react-native-keychain is not available');
 
       if (typeof kc.setGenericPassword === 'function') {
@@ -92,7 +99,7 @@ export function createKeychainAdapter(knownKeys: string[] = []): IStorageAdapter
       if (result === false) throw new Error('Keychain set failed');
     },
     async removeItem(key: string): Promise<void> {
-      const kc = getKeychain();
+      const kc = getKc();
       if (!kc) throw new Error('react-native-keychain is not available');
 
       if (typeof kc.resetGenericPassword === 'function') {
@@ -101,11 +108,11 @@ export function createKeychainAdapter(knownKeys: string[] = []): IStorageAdapter
       await kc.resetInternetCredentials(key);
     },
     isAvailable(): boolean {
-      return getKeychain() !== null;
+      return getKc() !== null;
     },
   };
 }
 
-export function isKeychainAvailable(): boolean {
-  return getKeychain() !== null;
+export function isKeychainAvailable(instance?: KeychainModule | null): boolean {
+  return (instance ?? getKeychainFromRequire()) !== null;
 }

@@ -61,6 +61,18 @@ The component fills its container. The consumer is responsible for header, back 
 - **Expo Go**: Async Storage and Expo Secure Store work. MMKV and Keychain need native code and are not available in Expo Go.
 - **Development build**: All four storages work with `expo-dev-client`.
 
+## Troubleshooting
+
+If you see **"Requiring unknown module"** for optional storage packages (AsyncStorage, Keychain, Secure Store), add to your `metro.config.js`:
+
+```js
+const { getDefaultConfig } = require('expo/metro-config');
+const config = getDefaultConfig(__dirname);
+config.transformer ??= {};
+config.transformer.allowOptionalDependencies = true;
+module.exports = config;
+```
+
 ## API (for custom adapters)
 
 Implement `IStorageAdapter` and pass it via `customAdapters`:
