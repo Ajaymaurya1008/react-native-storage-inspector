@@ -4,7 +4,6 @@ import type { IconName } from '@/components/Icon';
 import { Icon } from '@/components/Icon';
 import { theme } from '@/theme';
 import { LAYOUT } from '@/constants';
-import { styles as sharedStyles } from '@/components/styles';
 
 export interface IconButtonProps {
   name: IconName;
@@ -17,19 +16,21 @@ export interface IconButtonProps {
   activeOpacity?: number;
 }
 
-export function IconButton({
-  name,
-  onPress,
-  size = LAYOUT.iconSize,
-  tintColor = theme.colors.text,
-  disabled = false,
-  hitSlop = LAYOUT.hitSlop,
-  style,
-  activeOpacity = 0.6,
-}: IconButtonProps) {
+export function IconButton(props: IconButtonProps) {
+  const {
+    name,
+    onPress,
+    size = LAYOUT.iconSize,
+    tintColor = theme.colors.text,
+    disabled = false,
+    hitSlop = LAYOUT.hitSlop,
+    style,
+    activeOpacity = 0.6,
+  } = props;
+
   return (
     <TouchableOpacity
-      style={[sharedStyles.iconButton, style]}
+      style={[styles.iconButton, style]}
       onPress={onPress}
       disabled={disabled}
       hitSlop={hitSlop}
@@ -43,3 +44,12 @@ export function IconButton({
     </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  iconButton: {
+    width: LAYOUT.iconButtonSize,
+    height: LAYOUT.iconButtonSize,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

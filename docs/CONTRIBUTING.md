@@ -11,6 +11,7 @@ Thank you for your interest in contributing! This document provides guidelines f
 ## Development
 
 - **Format:** All code is formatted with [Prettier](https://prettier.io/). Run `npm run format` before committing.
+- **Component props:** Use a single `props` parameter and destructure inside the body: `function MyComponent(props: MyComponentProps) { const { a, b } = props; ... }`. Do not destructure in the parameter list.
 - **Test:** Run `npm test` before pushing.
 - **Build:** The library is built with [tsup](https://tsup.egoist.dev/). Run `npm run build` to build.
 

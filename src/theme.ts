@@ -13,6 +13,7 @@ export const theme = {
     textSecondary: '#666666',
     textMuted: '#999999',
     inverted: '#ffffff',
+    overlayBackdrop: 'rgba(0,0,0,0.5)',
   },
 } as const;
 

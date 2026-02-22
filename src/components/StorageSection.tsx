@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Share } from 'react-native';
+import { View, Text, TouchableOpacity, Share, StyleSheet } from 'react-native';
 import type { IStorageAdapter } from '@/adapters/types';
 import type { StorageItem } from '@/adapters/types';
 import { useStorageItems } from '@/hooks/useStorageItems';
@@ -7,8 +7,7 @@ import { ItemForm } from '@/components/ItemForm';
 import { ConfirmModal } from '@/components/ConfirmModal';
 import { Icon } from '@/components/Icon';
 import { IconButton } from '@/components/IconButton';
-import { ItemRowActions } from '@/components/ItemRowActions';
-import { styles } from '@/components/styles';
+import { StorageList } from '@/components/StorageList';
 import { theme } from '@/theme';
 import { strings } from '@/strings';
 import { LAYOUT } from '@/constants';
@@ -22,13 +21,15 @@ export interface StorageSectionProps {
   refreshTrigger?: number;
 }
 
-export function StorageSection({
-  adapter,
-  defaultExpanded = true,
-  expanded: expandedProp,
-  onToggleExpanded,
-  refreshTrigger,
-}: StorageSectionProps) {
+export function StorageSection(props: StorageSectionProps) {
+  const {
+    adapter,
+    defaultExpanded = true,
+    expanded: expandedProp,
+    onToggleExpanded,
+    refreshTrigger,
+  } = props;
+
   const { items, loading, error, refresh } = useStorageItems(adapter);
   const [expandedInternal, setExpandedInternal] = useState(defaultExpanded);
   const expanded = expandedProp !== undefined ? expandedProp : expandedInternal;
@@ -42,7 +43,6 @@ export function StorageSection({
     if (refreshTrigger !== undefined) refresh();
   }, [refreshTrigger, refresh]);
 
-  const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
   const [formVisible, setFormVisible] = useState(false);
   const [editingItem, setEditingItem] = useState<StorageItem | null>(null);
   const [deleteItem, setDeleteItem] = useState<StorageItem | null>(null);
@@ -149,75 +149,15 @@ export function StorageSection({
               <Text style={styles.loadingText}>{strings.loading}</Text>
             </View>
           ) : (
-            items.map((item) => {
-              const isItemExpanded = expandedKeys.has(item.key);
-              const charCount = item.value.length;
-              const toggleItemExpanded = () => {
-                setExpandedKeys((prev: Set<string>) => {
-                  const next = new Set(prev);
-                  if (next.has(item.key)) next.delete(item.key);
-                  else next.add(item.key);
-                  return next;
-                });
-              };
-              return (
-                <View key={item.key} style={styles.itemRow}>
-                  <TouchableOpacity
-                    key={item.key}
-                    onPress={toggleItemExpanded}
-                    activeOpacity={0.7}
-                  >
-                    <View style={styles.itemRowCollapsed}>
-                      <View style={{ flex: 1 }}>
-                        <Text style={styles.itemKey} numberOfLines={1}>
-                          {item.key}
-                        </Text>
-                        <Text style={styles.itemChars}>
-                          {strings.charCount(charCount)}
-                        </Text>
-                      </View>
-                      {!isItemExpanded ? (
-                        <ItemRowActions
-                          item={item}
-                          onCopy={handleCopy}
-                          onEdit={handleEdit}
-                          onDelete={setDeleteItem}
-                          showChevron
-                          chevronDirection="down"
-                        />
-                      ) : (
-                        <View style={styles.iconSlot}>
-                          <Icon
-                            name="chevronUp"
-                            size={LAYOUT.chevronSize}
-                            tintColor={theme.colors.text}
-                          />
-                        </View>
-                      )}
-                    </View>
-                  </TouchableOpacity>
-                  {isItemExpanded && (
-                    <View style={styles.itemRowExpanded}>
-                      <TouchableOpacity
-                        onPress={() => handleEdit(item)}
-                        style={styles.valueBox}
-                      >
-                        <Text style={styles.valueBoxLabel}>{strings.valueLabel}</Text>
-                        <Text style={styles.valueBoxText} selectable>
-                          {item.value || strings.emptyValue}
-                        </Text>
-                      </TouchableOpacity>
-                      <ItemRowActions
-                        item={item}
-                        onCopy={handleCopy}
-                        onEdit={handleEdit}
-                        onDelete={setDeleteItem}
-                      />
-                    </View>
-                  )}
-                </View>
-              );
-            })
+            items.map((item) => (
+              <StorageList
+                key={item.key}
+                item={item}
+                onCopy={handleCopy}
+                onEdit={handleEdit}
+                onDelete={setDeleteItem}
+              />
+            ))
           )}
           {!loading && items.length === 0 && !showKeychainHint && !showSecureStoreHint ? (
             <View style={styles.empty}>
@@ -256,3 +196,84 @@ export function StorageSection({
     </>
   );
 }
+
+const { colors } = theme;
+
+const styles = StyleSheet.create({
+  sectionHeader: {
+    height: LAYOUT.sectionHeaderHeight,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: LAYOUT.padding,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.border,
+    backgroundColor: colors.backgroundSecondary,
+    marginTop: LAYOUT.padding,
+    marginHorizontal: LAYOUT.padding,
+    borderRadius: LAYOUT.sectionRadius,
+  },
+  sectionHeaderLabelWrap: {
+    flex: 1,
+  },
+  sectionHeaderLabel: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  sectionHeaderCount: {
+    color: colors.textSecondary,
+    fontWeight: '400',
+  },
+  storageRowActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: LAYOUT.iconGap,
+  },
+  iconSlot: {
+    width: LAYOUT.iconButtonSize,
+    height: LAYOUT.iconButtonSize,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  keychainHint: {
+    padding: LAYOUT.padding,
+    marginHorizontal: LAYOUT.padding,
+    marginTop: 8,
+    marginBottom: 4,
+    backgroundColor: colors.backgroundSecondary,
+    borderRadius: 8,
+  },
+  keychainHintText: {
+    fontSize: LAYOUT.fontSize - 1,
+    color: colors.textSecondary,
+  },
+  error: {
+    padding: LAYOUT.padding,
+    backgroundColor: colors.backgroundTertiary,
+    marginHorizontal: LAYOUT.padding,
+    marginVertical: 8,
+    borderRadius: 8,
+  },
+  errorText: {
+    fontSize: LAYOUT.fontSize,
+    color: colors.text,
+  },
+  loading: {
+    padding: LAYOUT.padding * 2,
+    alignItems: 'center',
+    marginHorizontal: LAYOUT.padding,
+  },
+  loadingText: {
+    fontSize: LAYOUT.fontSize,
+    color: colors.textSecondary,
+  },
+  empty: {
+    padding: LAYOUT.padding * 2,
+    alignItems: 'center',
+    marginHorizontal: LAYOUT.padding,
+  },
+  emptyText: {
+    fontSize: LAYOUT.fontSize,
+    color: colors.textMuted,
+  },
+});

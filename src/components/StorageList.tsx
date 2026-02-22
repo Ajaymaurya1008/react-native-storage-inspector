@@ -1,146 +1,140 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
-import type { IStorageAdapter } from '@/adapters/types';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import type { StorageItem } from '@/adapters/types';
-import { useStorageItems } from '@/hooks/useStorageItems';
-import { ItemForm } from '@/components/ItemForm';
-import { styles } from '@/components/styles';
+import { Icon } from '@/components/Icon';
+import { ItemRowActions } from '@/components/ItemRowActions';
+import { theme } from '@/theme';
 import { strings } from '@/strings';
-
-const VALUE_TRUNCATE = 60;
+import { LAYOUT } from '@/constants';
 
 export interface StorageListProps {
-  adapter: IStorageAdapter | null;
+  item: StorageItem;
+  onCopy: (item: StorageItem) => void;
+  onEdit: (item: StorageItem) => void;
+  onDelete: (item: StorageItem) => void;
 }
 
-export function StorageList({ adapter }: StorageListProps) {
-  const { items, loading, error, refresh } = useStorageItems(adapter);
-  const [formVisible, setFormVisible] = useState(false);
-  const [editingItem, setEditingItem] = useState<StorageItem | null>(null);
-  const [refreshing, setRefreshing] = useState(false);
+export function StorageList(props: StorageListProps) {
+  const { item, onCopy, onEdit, onDelete } = props;
 
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    await refresh();
-    setRefreshing(false);
+  const [expandedKeys, setExpandedKeys] = useState(new Set<string>());
+  const charCount = item.value.length;
+
+  const handleToggleExpanded = () => {
+    setExpandedKeys((prev) => {
+      const next = new Set(prev);
+      if (next.has(item.key)) next.delete(item.key);
+      else next.add(item.key);
+      return next;
+    });
   };
-
-  const handleEdit = (item: StorageItem) => {
-    setEditingItem(item);
-    setFormVisible(true);
-  };
-
-  const handleAdd = () => {
-    setEditingItem(null);
-    setFormVisible(true);
-  };
-
-  const handleSave = async (key: string, value: string) => {
-    if (!adapter) return;
-    await adapter.setItem(key, value);
-    await refresh();
-  };
-
-  const handleDelete = async (item: StorageItem) => {
-    if (!adapter) return;
-    await adapter.removeItem(item.key);
-    await refresh();
-  };
-
-  const handleFormCancel = () => {
-    setFormVisible(false);
-    setEditingItem(null);
-  };
-
-  if (!adapter || !adapter.isAvailable()) {
-    return (
-      <View style={styles.empty}>
-        <Text style={styles.emptyText}>{strings.storageNotAvailable}</Text>
-      </View>
-    );
-  }
-
-  const isKeychain = adapter.type === 'keychain';
-  const showKeychainHint = isKeychain && items.length === 0;
-
+  const isExpanded = expandedKeys.has(item.key);
   return (
-    <>
-      {showKeychainHint ? (
-        <View style={styles.keychainHint}>
-          <Text style={styles.keychainHintText}>{strings.keychainHintShort}</Text>
+    <View style={styles.itemRow}>
+      <TouchableOpacity onPress={handleToggleExpanded} activeOpacity={0.7}>
+        <View style={styles.itemRowCollapsed}>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.itemKey} numberOfLines={1}>
+              {item.key}
+            </Text>
+            <Text style={styles.itemChars}>{strings.charCount(charCount)}</Text>
+          </View>
+          {!isExpanded ? (
+            <ItemRowActions
+              item={item}
+              onCopy={onCopy}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              showChevron
+              chevronDirection="down"
+            />
+          ) : (
+            <View style={styles.iconSlot}>
+              <Icon
+                name="chevronUp"
+                size={LAYOUT.chevronSize}
+                tintColor={theme.colors.text}
+              />
+            </View>
+          )}
         </View>
-      ) : null}
-      {error ? (
-        <View style={styles.error}>
-          <Text style={styles.errorText}>{error}</Text>
-        </View>
-      ) : null}
-      {loading && !refreshing ? (
-        <View style={styles.loading}>
-          <Text style={styles.loadingText}>{strings.loading}</Text>
-        </View>
-      ) : (
-        <FlatList
-          style={styles.list}
-          contentContainerStyle={styles.listContent}
-          data={items}
-          keyExtractor={(item) => item.key}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-          }
-          ListEmptyComponent={
-            !loading ? (
-              <View style={styles.empty}>
-                <Text style={styles.emptyText}>{strings.noItems}</Text>
-              </View>
-            ) : null
-          }
-          renderItem={({ item }) => {
-            const valuePreview =
-              item.value.length > VALUE_TRUNCATE
-                ? item.value.slice(0, VALUE_TRUNCATE) + '…'
-                : item.value;
-            return (
-              <View style={styles.row}>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.rowKey} numberOfLines={1}>
-                    {item.key}
-                  </Text>
-                  <Text style={styles.rowValue} numberOfLines={1}>
-                    {valuePreview || strings.emptyValue}
-                  </Text>
-                </View>
-                <View style={styles.rowActions}>
-                  <TouchableOpacity
-                    style={styles.rowButton}
-                    onPress={() => handleEdit(item)}
-                  >
-                    <Text style={styles.rowButtonText}>{strings.edit}</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.rowButton}
-                    onPress={() => handleDelete(item)}
-                  >
-                    <Text style={[styles.rowButtonText, styles.rowButtonDanger]}>
-                      {strings.delete}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            );
-          }}
-        />
-      )}
-      <TouchableOpacity style={styles.addButton} onPress={handleAdd}>
-        <Text style={styles.addButtonText}>{strings.addItem}</Text>
       </TouchableOpacity>
-      <ItemForm
-        visible={formVisible}
-        storageName={adapter?.name ?? 'Storage'}
-        editingItem={editingItem}
-        onSave={handleSave}
-        onCancel={handleFormCancel}
-      />
-    </>
+      {isExpanded && (
+        <View style={styles.itemRowExpanded}>
+          <TouchableOpacity onPress={() => onEdit(item)} style={styles.valueBox}>
+            <Text style={styles.valueBoxLabel}>{strings.valueLabel}</Text>
+            <Text style={styles.valueBoxText} selectable>
+              {item.value}
+            </Text>
+          </TouchableOpacity>
+          <ItemRowActions
+            item={item}
+            onCopy={onCopy}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        </View>
+      )}
+    </View>
   );
 }
+
+const { colors } = theme;
+
+const styles = StyleSheet.create({
+  itemRow: {
+    minHeight: LAYOUT.rowMinHeight,
+    paddingHorizontal: LAYOUT.padding,
+    paddingVertical: 12,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: colors.borderLight,
+    backgroundColor: colors.background,
+    marginHorizontal: LAYOUT.padding,
+    marginBottom: 4,
+  },
+  itemRowCollapsed: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+  },
+  itemKey: {
+    flex: 1,
+    fontSize: LAYOUT.fontSize,
+    fontWeight: '500',
+    color: colors.text,
+  },
+  itemChars: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    marginTop: 2,
+  },
+  iconSlot: {
+    width: LAYOUT.iconButtonSize,
+    height: LAYOUT.iconButtonSize,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  itemRowExpanded: {
+    paddingTop: 4,
+  },
+  valueBox: {
+    backgroundColor: colors.backgroundSecondary,
+    borderRadius: 8,
+    padding: 12,
+    marginTop: 8,
+    marginBottom: 8,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.border,
+  },
+  valueBoxLabel: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: colors.textSecondary,
+    marginBottom: 4,
+    textTransform: 'uppercase',
+  },
+  valueBoxText: {
+    fontSize: LAYOUT.fontSize,
+    color: colors.text,
+  },
+});

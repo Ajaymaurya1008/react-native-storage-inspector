@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text, Modal, TouchableOpacity } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native';
 import { IconButton } from '@/components/IconButton';
-import { styles } from '@/components/styles';
 import { LAYOUT } from '@/constants';
 import { theme } from '@/theme';
 import { strings } from '@/strings';
@@ -17,19 +16,17 @@ export interface ConfirmModalProps {
   onCancel: () => void;
 }
 
-export function ConfirmModal({
-  visible,
-  title,
-  message,
-  confirmLabel = strings.confirmDelete,
-  cancelLabel = strings.cancelKeep,
-  danger = true,
-  onConfirm,
-  onCancel,
-}: ConfirmModalProps) {
-  const handleConfirm = () => {
-    void Promise.resolve(onConfirm());
-  };
+export function ConfirmModal(props: ConfirmModalProps) {
+  const {
+    visible,
+    title,
+    message,
+    confirmLabel = strings.confirmDelete,
+    cancelLabel = strings.cancelKeep,
+    danger = true,
+    onConfirm,
+    onCancel,
+  } = props;
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onCancel}>
@@ -66,7 +63,7 @@ export function ConfirmModal({
                 styles.confirmButton,
                 danger ? styles.confirmButtonDanger : styles.formButtonSubmit,
               ]}
-              onPress={handleConfirm}
+              onPress={onConfirm}
             >
               <Text
                 style={[
@@ -83,3 +80,81 @@ export function ConfirmModal({
     </Modal>
   );
 }
+
+const { colors } = theme;
+
+const styles = StyleSheet.create({
+  confirmOverlay: {
+    flex: 1,
+    backgroundColor: colors.overlayBackdrop,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  confirmModal: {
+    width: '100%',
+    maxWidth: LAYOUT.screenWidth,
+    backgroundColor: colors.background,
+    borderTopLeftRadius: LAYOUT.modalRadius,
+    borderTopRightRadius: LAYOUT.modalRadius,
+    padding: LAYOUT.padding,
+    paddingBottom: LAYOUT.padding + 34,
+  },
+  confirmHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  confirmTitle: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: colors.text,
+    flex: 1,
+  },
+  formCloseButton: {
+    width: 44,
+    height: 44,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+  confirmMessage: {
+    fontSize: 15,
+    color: colors.textSecondary,
+    lineHeight: 22,
+    marginBottom: 20,
+  },
+  confirmActions: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  confirmButton: {
+    flex: 1,
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  confirmButtonSecondary: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: colors.text,
+  },
+  confirmButtonDanger: {
+    backgroundColor: colors.text,
+  },
+  formButtonSubmit: {
+    backgroundColor: colors.text,
+  },
+  confirmButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  confirmButtonTextSecondary: {
+    color: colors.text,
+  },
+  confirmButtonTextDanger: {
+    color: colors.inverted,
+  },
+  formButtonTextSubmit: {
+    color: colors.inverted,
+  },
+});

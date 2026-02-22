@@ -1,21 +1,15 @@
 import React, { useMemo, useState } from 'react';
-import { View, Text, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, RefreshControl, StyleSheet } from 'react-native';
 import type { IStorageAdapter } from '@/adapters/types';
 import { createMMKVAdapter } from '@/adapters/mmkv';
-import {
-  createAsyncStorageAdapter,
-  type AsyncStorageModule,
-} from '@/adapters/async-storage';
-import { createKeychainAdapter, type KeychainModule } from '@/adapters/keychain';
-import {
-  createSecureStoreAdapter,
-  type SecureStoreModule,
-} from '@/adapters/secure-store';
+import { createAsyncStorageAdapter } from '@/adapters/async-storage';
+import { createKeychainAdapter } from '@/adapters/keychain';
+import { createSecureStoreAdapter } from '@/adapters/secure-store';
 import { StorageSection } from '@/components/StorageSection';
 import { IconButton } from '@/components/IconButton';
-import { styles } from '@/components/styles';
 import { theme } from '@/theme';
 import { strings } from '@/strings';
+import { LAYOUT } from '@/constants';
 
 export interface StorageInspectorProps {
   mmkvInstances?: Array<{
@@ -28,11 +22,9 @@ export interface StorageInspectorProps {
   customAdapters?: IStorageAdapter[];
 }
 
-export function StorageInspector({
-  mmkvInstances = [],
-  secureStoreKeys,
-  customAdapters = [],
-}: StorageInspectorProps) {
+export function StorageInspector(props: StorageInspectorProps) {
+  const { mmkvInstances = [], secureStoreKeys, customAdapters = [] } = props;
+
   const [refreshKey, setRefreshKey] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const [expandedIndices, setExpandedIndices] = useState<Set<number>>(() => new Set([0]));
@@ -115,3 +107,44 @@ export function StorageInspector({
     </View>
   );
 }
+
+const { colors } = theme;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    width: '100%',
+    backgroundColor: colors.background,
+  },
+  content: {
+    flex: 1,
+  },
+  scroll: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: LAYOUT.fabSize + LAYOUT.padding + 20,
+    paddingTop: LAYOUT.padding,
+  },
+  fab: {
+    position: 'absolute',
+    bottom: LAYOUT.padding + 16,
+    right: LAYOUT.padding + 16,
+    width: LAYOUT.fabSize,
+    height: LAYOUT.fabSize,
+    borderRadius: LAYOUT.fabSize / 2,
+    backgroundColor: colors.text,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  empty: {
+    padding: LAYOUT.padding * 2,
+    alignItems: 'center',
+    marginHorizontal: LAYOUT.padding,
+  },
+  emptyText: {
+    fontSize: LAYOUT.fontSize,
+    color: colors.textMuted,
+  },
+});

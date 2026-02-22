@@ -14,7 +14,6 @@ export const strings = {
   loading: 'Loading…',
   noItems: 'No items',
   valueLabel: 'Value',
-  emptyValue: '(empty)',
   charCount: (n: number) => (n === 1 ? '1 char' : `${n} chars`),
   deleteItemTitle: (key: string) => `Delete ${key}?`,
   deleteItemMessage: (key: string) =>

@@ -25,7 +25,8 @@ export function useStorageItems(adapter: IStorageAdapter | null): {
       const pairs: StorageItem[] = [];
       for (const key of keys) {
         const value = await adapter.getItem(key);
-        pairs.push({ key, value: value ?? '' });
+        if (value === null) continue;
+        pairs.push({ key, value });
       }
       setItems(pairs);
     } catch (e) {

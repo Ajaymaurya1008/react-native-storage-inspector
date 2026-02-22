@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import type { StorageItem } from '@/adapters/types';
 import { IconButton } from '@/components/IconButton';
-import { styles } from '@/components/styles';
 import { LAYOUT } from '@/constants';
 import { theme } from '@/theme';
 import { strings } from '@/strings';
@@ -15,13 +14,9 @@ export interface ItemFormProps {
   onCancel: () => void;
 }
 
-export function ItemForm({
-  visible,
-  storageName,
-  editingItem,
-  onSave,
-  onCancel,
-}: ItemFormProps) {
+export function ItemForm(props: ItemFormProps) {
+  const { visible, storageName, editingItem, onSave, onCancel } = props;
+
   const [key, setKey] = useState('');
   const [value, setValue] = useState('');
   const [saving, setSaving] = useState(false);
@@ -133,3 +128,101 @@ export function ItemForm({
     </Modal>
   );
 }
+
+const { colors } = theme;
+
+const styles = StyleSheet.create({
+  formOverlay: {
+    flex: 1,
+    backgroundColor: colors.overlayBackdrop,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  formModal: {
+    width: '100%',
+    maxWidth: LAYOUT.screenWidth,
+    backgroundColor: colors.background,
+    borderTopLeftRadius: LAYOUT.modalRadius,
+    borderTopRightRadius: LAYOUT.modalRadius,
+    padding: LAYOUT.padding,
+    paddingBottom: LAYOUT.padding + 34,
+  },
+  formHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: LAYOUT.padding,
+  },
+  formTitle: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: colors.text,
+    flex: 1,
+  },
+  formCloseButton: {
+    width: 44,
+    height: 44,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+  },
+  formStorageType: {
+    fontSize: 13,
+    color: colors.textSecondary,
+    marginBottom: 12,
+  },
+  formLabel: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: colors.textSecondary,
+    marginBottom: 6,
+  },
+  formInput: {
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 10,
+    padding: 12,
+    fontSize: LAYOUT.fontSize,
+    marginBottom: LAYOUT.padding,
+    color: colors.text,
+    backgroundColor: colors.background,
+  },
+  formInputDisabled: {
+    backgroundColor: colors.backgroundSecondary,
+    color: colors.textSecondary,
+  },
+  formActions: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 12,
+    marginTop: 8,
+  },
+  formButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    minWidth: 100,
+    alignItems: 'center',
+  },
+  formButtonCancel: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: colors.text,
+  },
+  formButtonSubmit: {
+    backgroundColor: colors.text,
+  },
+  formButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  formButtonTextCancel: {
+    color: colors.text,
+  },
+  formButtonTextSubmit: {
+    color: colors.inverted,
+  },
+  errorText: {
+    fontSize: LAYOUT.fontSize,
+    color: colors.text,
+  },
+});

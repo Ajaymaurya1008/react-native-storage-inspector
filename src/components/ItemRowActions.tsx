@@ -1,9 +1,8 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import type { StorageItem } from '@/adapters/types';
 import { Icon } from '@/components/Icon';
 import { IconButton } from '@/components/IconButton';
-import { styles } from '@/components/styles';
 import { theme } from '@/theme';
 import { LAYOUT } from '@/constants';
 
@@ -16,14 +15,16 @@ export interface ItemRowActionsProps {
   chevronDirection?: 'up' | 'down';
 }
 
-export function ItemRowActions({
-  item,
-  onCopy,
-  onEdit,
-  onDelete,
-  showChevron = false,
-  chevronDirection = 'down',
-}: ItemRowActionsProps) {
+export function ItemRowActions(props: ItemRowActionsProps) {
+  const {
+    item,
+    onCopy,
+    onEdit,
+    onDelete,
+    showChevron = false,
+    chevronDirection = 'down',
+  } = props;
+
   return (
     <View style={styles.itemRowActions}>
       <IconButton name="copy" onPress={() => onCopy(item)} />
@@ -41,3 +42,18 @@ export function ItemRowActions({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  itemRowActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: LAYOUT.iconGap,
+    gap: LAYOUT.iconGap,
+  },
+  iconSlot: {
+    width: LAYOUT.iconButtonSize,
+    height: LAYOUT.iconButtonSize,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

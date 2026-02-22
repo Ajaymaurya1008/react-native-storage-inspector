@@ -29,12 +29,9 @@ export interface IconProps {
   iconStyle?: TextStyle;
 }
 
-export function Icon({
-  name,
-  size = 20,
-  tintColor = theme.colors.text,
-  iconStyle,
-}: IconProps) {
+export function Icon(props: IconProps) {
+  const { name, size = 20, tintColor = theme.colors.text, iconStyle } = props;
+
   const glyph = GLYPHS[name] ?? '?';
   const rotation = ROTATION[name];
 
