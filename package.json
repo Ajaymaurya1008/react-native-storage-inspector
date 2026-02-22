@@ -37,6 +37,10 @@
     "url": "https://github.com/Ajaymaurya1008/react-native-storage-inspector/issues"
   },
   "homepage": "https://github.com/Ajaymaurya1008/react-native-storage-inspector#readme",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "peerDependencies": {
     "react": "*",
     "react-native": "*"
