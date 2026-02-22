@@ -2,10 +2,6 @@ import type { IStorageAdapter } from '@/adapters/types';
 
 /**
  * AsyncStorage-compatible module interface.
- * Pass your AsyncStorage instance to avoid Metro "unknown module" errors in Expo:
- * @example
- * import AsyncStorage from '@react-native-async-storage/async-storage';
- * createAsyncStorageAdapter(AsyncStorage)
  */
 export type AsyncStorageModule = {
   getAllKeys(): Promise<string[]>;
@@ -14,8 +10,7 @@ export type AsyncStorageModule = {
   removeItem(key: string): Promise<void>;
 };
 
-let asyncStorage: AsyncStorageModule | null = null;
-
+// Optional require; support both ESM (mod.default) and CJS (mod) so we always get the API object.
 function getAsyncStorageFromRequire(): AsyncStorageModule | null {
   try {
     const mod = require('@react-native-async-storage/async-storage') as
@@ -30,17 +25,10 @@ function getAsyncStorageFromRequire(): AsyncStorageModule | null {
 }
 
 /**
- * Creates an AsyncStorage adapter. Pass the AsyncStorage instance for reliable
- * bundling in Expo/Metro (avoids "unknown module" errors):
- *
- * @example
- * import AsyncStorage from '@react-native-async-storage/async-storage';
- * createAsyncStorageAdapter(AsyncStorage)
+ * Creates an AsyncStorage adapter.
  */
-export function createAsyncStorageAdapter(
-  instance?: AsyncStorageModule | null
-): IStorageAdapter {
-  const getStorage = () => instance ?? (asyncStorage ??= getAsyncStorageFromRequire());
+export function createAsyncStorageAdapter(): IStorageAdapter {
+  const getStorage = () => getAsyncStorageFromRequire();
   return {
     type: 'async-storage',
     name: 'Async Storage',
@@ -70,6 +58,6 @@ export function createAsyncStorageAdapter(
   };
 }
 
-export function isAsyncStorageAvailable(instance?: AsyncStorageModule | null): boolean {
-  return (instance ?? getAsyncStorageFromRequire()) !== null;
+export function isAsyncStorageAvailable(): boolean {
+  return getAsyncStorageFromRequire() !== null;
 }

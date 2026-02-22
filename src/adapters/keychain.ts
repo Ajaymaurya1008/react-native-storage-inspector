@@ -38,21 +38,16 @@ function getKeychainFromRequire(): KeychainModule | null {
 }
 
 /**
- * Keychain adapter. Pass the keychain instance for reliable bundling in Expo:
- * @example import * as Keychain from 'react-native-keychain';
- * createKeychainAdapter([], Keychain)
+ * Creates a Keychain adapter.
  */
-export function createKeychainAdapter(
-  knownKeys: string[] = [],
-  instance?: KeychainModule | null
-): IStorageAdapter {
-  const getKc = () => instance ?? (keychain ??= getKeychainFromRequire());
+export function createKeychainAdapter(): IStorageAdapter {
+  const getKc = () => getKeychainFromRequire();
   return {
     type: 'keychain',
     name: 'Keychain',
     async getAllKeys(): Promise<string[]> {
       const kc = getKc();
-      if (!kc) return [...knownKeys];
+      if (!kc) return [];
 
       const genericServices: string[] = [];
       if (typeof kc.getAllGenericPasswordServices === 'function') {
@@ -64,8 +59,7 @@ export function createKeychainAdapter(
         }
       }
 
-      const merged = new Set([...genericServices, ...knownKeys]);
-      return Array.from(merged);
+      return genericServices;
     },
     async getItem(key: string): Promise<string | null> {
       const kc = getKc();
@@ -113,6 +107,6 @@ export function createKeychainAdapter(
   };
 }
 
-export function isKeychainAvailable(instance?: KeychainModule | null): boolean {
-  return (instance ?? getKeychainFromRequire()) !== null;
+export function isKeychainAvailable(): boolean {
+  return getKeychainFromRequire() !== null;
 }

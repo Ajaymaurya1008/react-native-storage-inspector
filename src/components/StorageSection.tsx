@@ -16,7 +16,6 @@ import { LAYOUT } from '@/constants';
 export interface StorageSectionProps {
   key?: React.Key;
   adapter: IStorageAdapter;
-  keychainKeys?: string[];
   onKeychainKeyAdded?: (key: string) => void;
   onSecureStoreKeyAdded?: (key: string) => void;
   defaultExpanded?: boolean;
@@ -27,7 +26,6 @@ export interface StorageSectionProps {
 
 export function StorageSection({
   adapter,
-  keychainKeys,
   onKeychainKeyAdded,
   onSecureStoreKeyAdded,
   defaultExpanded = true,
@@ -105,8 +103,7 @@ export function StorageSection({
 
   const isKeychain = adapter.type === 'keychain';
   const isSecureStore = adapter.type === 'expo-secure-store';
-  const showKeychainHint =
-    isKeychain && items.length === 0 && (keychainKeys?.length ?? 0) === 0;
+  const showKeychainHint = isKeychain && items.length === 0;
   const showSecureStoreHint = isSecureStore && items.length === 0;
 
   if (!adapter.isAvailable()) return null;

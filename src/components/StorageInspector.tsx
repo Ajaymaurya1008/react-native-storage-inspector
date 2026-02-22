@@ -24,24 +24,13 @@ export interface StorageInspectorProps {
     set(k: string, v: string | number | boolean): void;
     delete(k: string): void;
   }>;
-  /** Pass AsyncStorage to avoid Metro "unknown module" in Expo. */
-  asyncStorageInstance?: AsyncStorageModule | null;
-  keychainKeys?: string[];
-  /** Pass Keychain module to avoid Metro "unknown module" in Expo. */
-  keychainInstance?: KeychainModule | null;
   secureStoreKeys?: string[];
-  /** Pass SecureStore module to avoid Metro "unknown module" in Expo. */
-  secureStoreInstance?: SecureStoreModule | null;
   customAdapters?: IStorageAdapter[];
 }
 
 export function StorageInspector({
   mmkvInstances = [],
-  asyncStorageInstance,
-  keychainKeys: keychainKeysProp,
-  keychainInstance,
   secureStoreKeys: secureStoreKeysProp,
-  secureStoreInstance,
   customAdapters = [],
 }: StorageInspectorProps) {
   const [keychainKeysAdded, setKeychainKeysAdded] = useState<string[]>([]);
@@ -49,11 +38,6 @@ export function StorageInspector({
   const [refreshKey, setRefreshKey] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const [expandedIndices, setExpandedIndices] = useState<Set<number>>(() => new Set([0]));
-
-  const keychainKeys = useMemo(
-    () => [...(keychainKeysProp ?? []), ...keychainKeysAdded],
-    [keychainKeysProp, keychainKeysAdded]
-  );
 
   const secureStoreKeys = useMemo(
     () => [...(secureStoreKeysProp ?? []), ...secureStoreKeysAdded],
@@ -69,29 +53,18 @@ export function StorageInspector({
       );
     });
 
-    const asyncAdapter = createAsyncStorageAdapter(asyncStorageInstance);
+    const asyncAdapter = createAsyncStorageAdapter();
     if (asyncAdapter.isAvailable()) list.push(asyncAdapter);
 
-    const keychainAdapter = createKeychainAdapter(keychainKeys, keychainInstance);
+    const keychainAdapter = createKeychainAdapter();
     if (keychainAdapter.isAvailable()) list.push(keychainAdapter);
 
-    const secureStoreAdapter = createSecureStoreAdapter(
-      secureStoreKeys,
-      secureStoreInstance
-    );
+    const secureStoreAdapter = createSecureStoreAdapter(secureStoreKeys);
     if (secureStoreAdapter.isAvailable()) list.push(secureStoreAdapter);
 
     list.push(...customAdapters);
     return list;
-  }, [
-    mmkvInstances,
-    asyncStorageInstance,
-    keychainKeys,
-    keychainInstance,
-    secureStoreKeys,
-    secureStoreInstance,
-    customAdapters,
-  ]);
+  }, [mmkvInstances, secureStoreKeys, customAdapters]);
 
   const handleKeychainKeyAdded = (key: string) => {
     setKeychainKeysAdded((prev: string[]) =>
@@ -129,7 +102,6 @@ export function StorageInspector({
                 <StorageSection
                   key={`${adapter.type}-${index}`}
                   adapter={adapter}
-                  keychainKeys={keychainKeysProp}
                   onKeychainKeyAdded={handleKeychainKeyAdded}
                   onSecureStoreKeyAdded={handleSecureStoreKeyAdded}
                   expanded={expandedIndices.has(index)}

@@ -21,16 +21,10 @@ function getSecureStoreFromRequire(): SecureStoreModule | null {
 }
 
 /**
- * expo-secure-store has no API to list all keys. Pass knownKeys to inspect
- * those entries. Pass the module for reliable bundling in Expo:
- * @example import * as SecureStore from 'expo-secure-store';
- * createSecureStoreAdapter([], SecureStore)
+ * Creates a Secure Store adapter. Since expo-secure-store has no API to list all keys, we persist the list of keys in Secure Store.
  */
-export function createSecureStoreAdapter(
-  knownKeys: string[] = [],
-  instance?: SecureStoreModule | null
-): IStorageAdapter {
-  const getStore = () => instance ?? (secureStore ??= getSecureStoreFromRequire());
+export function createSecureStoreAdapter(knownKeys: string[] = []): IStorageAdapter {
+  const getStore = () => getSecureStoreFromRequire();
   return {
     type: 'expo-secure-store',
     name: 'Secure Store',
@@ -58,6 +52,6 @@ export function createSecureStoreAdapter(
   };
 }
 
-export function isSecureStoreAvailable(instance?: SecureStoreModule | null): boolean {
-  return (instance ?? getSecureStoreFromRequire()) !== null;
+export function isSecureStoreAvailable(): boolean {
+  return getSecureStoreFromRequire() !== null;
 }
