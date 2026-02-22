@@ -49,12 +49,11 @@ The component fills its container. The consumer is responsible for header, back 
 
 ### Props
 
-| Prop              | Type                | Description                                                                                                                   |
-| ----------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `mmkvInstances`   | `MMKV[]`            | **Required for MMKV.** Pass your MMKV instances to inspect.                                                                   |
-| `secureStoreKeys` | `string[]`          | **Required for Secure Store.** Keys to list (no list API).                                                                    |
-| `keychainKeys`    | `string[]`          | Optional. Only for internet credentials (no list API). Generic passwords auto-discovered via `getAllGenericPasswordServices`. |
-| `customAdapters`  | `IStorageAdapter[]` | Optional. Custom adapters for other storages.                                                                                 |
+| Prop              | Type                | Description                                                                                       |
+| ----------------- | ------------------- | ------------------------------------------------------------------------------------------------- |
+| `mmkvInstances`   | `MMKV[]`            | **Required for MMKV.** Pass your MMKV instances to inspect.                                       |
+| `secureStoreKeys` | `string[]`          | Optional. Known keys for Secure Store (no list API). Merged with keys persisted by the inspector. |
+| `customAdapters`  | `IStorageAdapter[]` | Optional. Custom adapters for other storages.                                                     |
 
 ## Expo
 

@@ -8,8 +8,7 @@ export const strings = {
     'No storage adapter available. Install at least one of: react-native-mmkv, @react-native-async-storage/async-storage, react-native-keychain, expo-secure-store',
 
   // StorageSection
-  keychainHint:
-    'No generic password items yet. Add a key using + above, or pass keychainKeys for internet credentials.',
+  keychainHint: 'No generic password items yet. Add a key using + above.',
   secureStoreHint:
     'Secure Store has no list API. Pass secureStoreKeys prop with known keys, or add a key using + above.',
   loading: 'Loading…',
@@ -26,8 +25,7 @@ export const strings = {
 
   // StorageList
   storageNotAvailable: 'This storage is not available.',
-  keychainHintShort:
-    'No items yet. Add a key below, or pass keychainKeys for internet credentials.',
+  keychainHintShort: 'No items yet. Add a key below.',
   edit: 'Edit',
   delete: 'Delete',
   addItem: 'Add item',

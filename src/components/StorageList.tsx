@@ -11,15 +11,9 @@ const VALUE_TRUNCATE = 60;
 
 export interface StorageListProps {
   adapter: IStorageAdapter | null;
-  keychainKeys?: string[];
-  onKeychainKeyAdded?: (key: string) => void;
 }
 
-export function StorageList({
-  adapter,
-  keychainKeys,
-  onKeychainKeyAdded,
-}: StorageListProps) {
+export function StorageList({ adapter }: StorageListProps) {
   const { items, loading, error, refresh } = useStorageItems(adapter);
   const [formVisible, setFormVisible] = useState(false);
   const [editingItem, setEditingItem] = useState<StorageItem | null>(null);
@@ -43,11 +37,7 @@ export function StorageList({
 
   const handleSave = async (key: string, value: string) => {
     if (!adapter) return;
-    const isNewKey = !editingItem || editingItem.key !== key;
     await adapter.setItem(key, value);
-    if (adapter.type === 'keychain' && isNewKey) {
-      onKeychainKeyAdded?.(key);
-    }
     await refresh();
   };
 
@@ -71,8 +61,7 @@ export function StorageList({
   }
 
   const isKeychain = adapter.type === 'keychain';
-  const showKeychainHint =
-    isKeychain && items.length === 0 && (keychainKeys?.length ?? 0) === 0;
+  const showKeychainHint = isKeychain && items.length === 0;
 
   return (
     <>

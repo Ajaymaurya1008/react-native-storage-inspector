@@ -1,8 +1,7 @@
 import type { IStorageAdapter } from '@/adapters/types';
 
 /**
- * Keychain-compatible module. Pass your keychain instance to avoid Metro
- * "unknown module" errors in Expo.
+ * Keychain-compatible module (generic password only).
  */
 export type KeychainModule = {
   getAllGenericPasswordServices?(options?: object): Promise<string[]>;
@@ -15,16 +14,6 @@ export type KeychainModule = {
     options?: { service?: string }
   ): Promise<{ storage: string } | false>;
   resetGenericPassword?(options?: { service?: string }): Promise<void>;
-  setInternetCredentials(
-    server: string,
-    username: string,
-    password: string
-  ): Promise<{ storage: string } | false>;
-  getInternetCredentials(server: string): Promise<{
-    username: string;
-    password: string;
-  } | null>;
-  resetInternetCredentials(server: string): Promise<void>;
 };
 
 let keychain: KeychainModule | null = null;
@@ -55,7 +44,7 @@ export function createKeychainAdapter(): IStorageAdapter {
           const services = await kc.getAllGenericPasswordServices();
           if (Array.isArray(services)) genericServices.push(...services);
         } catch {
-          // Ignore – fall back to knownKeys
+          // ignore
         }
       }
 
@@ -63,43 +52,29 @@ export function createKeychainAdapter(): IStorageAdapter {
     },
     async getItem(key: string): Promise<string | null> {
       const kc = getKc();
-      if (!kc) return null;
-
-      if (typeof kc.getGenericPassword === 'function') {
-        try {
-          const creds = await kc.getGenericPassword({ service: key });
-          if (creds && typeof creds === 'object' && 'password' in creds) {
-            return creds.password;
-          }
-        } catch {
-          // Fall through to internet credentials
+      if (!kc?.getGenericPassword) return null;
+      try {
+        const creds = await kc.getGenericPassword({ service: key });
+        if (creds && typeof creds === 'object' && 'password' in creds) {
+          return creds.password;
         }
+      } catch {
+        // ignore
       }
-
-      const creds = await kc.getInternetCredentials(key);
-      return creds?.password ?? null;
+      return null;
     },
     async setItem(key: string, value: string): Promise<void> {
       const kc = getKc();
-      if (!kc) throw new Error('react-native-keychain is not available');
-
-      if (typeof kc.setGenericPassword === 'function') {
-        const result = await kc.setGenericPassword(key, value, { service: key });
-        if (result === false) throw new Error('Keychain set failed');
-        return;
-      }
-
-      const result = await kc.setInternetCredentials(key, key, value);
+      if (!kc?.setGenericPassword)
+        throw new Error('react-native-keychain is not available');
+      const result = await kc.setGenericPassword(key, value, { service: key });
       if (result === false) throw new Error('Keychain set failed');
     },
     async removeItem(key: string): Promise<void> {
       const kc = getKc();
-      if (!kc) throw new Error('react-native-keychain is not available');
-
-      if (typeof kc.resetGenericPassword === 'function') {
-        await kc.resetGenericPassword({ service: key });
-      }
-      await kc.resetInternetCredentials(key);
+      if (!kc?.resetGenericPassword)
+        throw new Error('react-native-keychain is not available');
+      await kc.resetGenericPassword({ service: key });
     },
     isAvailable(): boolean {
       return getKc() !== null;

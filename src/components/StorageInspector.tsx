@@ -30,19 +30,12 @@ export interface StorageInspectorProps {
 
 export function StorageInspector({
   mmkvInstances = [],
-  secureStoreKeys: secureStoreKeysProp,
+  secureStoreKeys,
   customAdapters = [],
 }: StorageInspectorProps) {
-  const [keychainKeysAdded, setKeychainKeysAdded] = useState<string[]>([]);
-  const [secureStoreKeysAdded, setSecureStoreKeysAdded] = useState<string[]>([]);
   const [refreshKey, setRefreshKey] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const [expandedIndices, setExpandedIndices] = useState<Set<number>>(() => new Set([0]));
-
-  const secureStoreKeys = useMemo(
-    () => [...(secureStoreKeysProp ?? []), ...secureStoreKeysAdded],
-    [secureStoreKeysProp, secureStoreKeysAdded]
-  );
 
   const adapters = useMemo(() => {
     const list: IStorageAdapter[] = [];
@@ -59,24 +52,12 @@ export function StorageInspector({
     const keychainAdapter = createKeychainAdapter();
     if (keychainAdapter.isAvailable()) list.push(keychainAdapter);
 
-    const secureStoreAdapter = createSecureStoreAdapter(secureStoreKeys);
+    const secureStoreAdapter = createSecureStoreAdapter(secureStoreKeys ?? []);
     if (secureStoreAdapter.isAvailable()) list.push(secureStoreAdapter);
 
     list.push(...customAdapters);
     return list;
   }, [mmkvInstances, secureStoreKeys, customAdapters]);
-
-  const handleKeychainKeyAdded = (key: string) => {
-    setKeychainKeysAdded((prev: string[]) =>
-      prev.includes(key) ? prev : [...prev, key]
-    );
-  };
-
-  const handleSecureStoreKeyAdded = (key: string) => {
-    setSecureStoreKeysAdded((prev: string[]) =>
-      prev.includes(key) ? prev : [...prev, key]
-    );
-  };
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -102,8 +83,6 @@ export function StorageInspector({
                 <StorageSection
                   key={`${adapter.type}-${index}`}
                   adapter={adapter}
-                  onKeychainKeyAdded={handleKeychainKeyAdded}
-                  onSecureStoreKeyAdded={handleSecureStoreKeyAdded}
                   expanded={expandedIndices.has(index)}
                   onToggleExpanded={() => {
                     setExpandedIndices((prev) => {

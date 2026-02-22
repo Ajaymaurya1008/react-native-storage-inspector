@@ -16,8 +16,6 @@ import { LAYOUT } from '@/constants';
 export interface StorageSectionProps {
   key?: React.Key;
   adapter: IStorageAdapter;
-  onKeychainKeyAdded?: (key: string) => void;
-  onSecureStoreKeyAdded?: (key: string) => void;
   defaultExpanded?: boolean;
   expanded?: boolean;
   onToggleExpanded?: () => void;
@@ -26,8 +24,6 @@ export interface StorageSectionProps {
 
 export function StorageSection({
   adapter,
-  onKeychainKeyAdded,
-  onSecureStoreKeyAdded,
   defaultExpanded = true,
   expanded: expandedProp,
   onToggleExpanded,
@@ -63,14 +59,7 @@ export function StorageSection({
   };
 
   const handleSave = async (key: string, value: string) => {
-    const isNewKey = !editingItem || editingItem.key !== key;
     await adapter.setItem(key, value);
-    if (adapter.type === 'keychain' && isNewKey) {
-      onKeychainKeyAdded?.(key);
-    }
-    if (adapter.type === 'expo-secure-store' && isNewKey) {
-      onSecureStoreKeyAdded?.(key);
-    }
     await refresh();
   };
 
