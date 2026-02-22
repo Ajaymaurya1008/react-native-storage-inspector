@@ -175,46 +175,52 @@ export function StorageSection({
                 });
               };
               return (
-                <TouchableOpacity
-                  key={item.key}
-                  style={styles.itemRow}
-                  onPress={toggleItemExpanded}
-                  activeOpacity={0.7}
-                >
-                  <View style={styles.itemRowCollapsed}>
-                    <View style={{ flex: 1 }}>
-                      <Text style={styles.itemKey} numberOfLines={1}>
-                        {item.key}
-                      </Text>
-                      <Text style={styles.itemChars}>{strings.charCount(charCount)}</Text>
-                    </View>
-                    {!isItemExpanded ? (
-                      <ItemRowActions
-                        item={item}
-                        onCopy={handleCopy}
-                        onEdit={handleEdit}
-                        onDelete={setDeleteItem}
-                        showChevron
-                        chevronDirection="down"
-                      />
-                    ) : (
-                      <View style={styles.iconSlot}>
-                        <Icon
-                          name="chevronUp"
-                          size={LAYOUT.chevronSize}
-                          tintColor={theme.colors.text}
-                        />
+                <View key={item.key} style={styles.itemRow}>
+                  <TouchableOpacity
+                    key={item.key}
+                    onPress={toggleItemExpanded}
+                    activeOpacity={0.7}
+                  >
+                    <View style={styles.itemRowCollapsed}>
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.itemKey} numberOfLines={1}>
+                          {item.key}
+                        </Text>
+                        <Text style={styles.itemChars}>
+                          {strings.charCount(charCount)}
+                        </Text>
                       </View>
-                    )}
-                  </View>
+                      {!isItemExpanded ? (
+                        <ItemRowActions
+                          item={item}
+                          onCopy={handleCopy}
+                          onEdit={handleEdit}
+                          onDelete={setDeleteItem}
+                          showChevron
+                          chevronDirection="down"
+                        />
+                      ) : (
+                        <View style={styles.iconSlot}>
+                          <Icon
+                            name="chevronUp"
+                            size={LAYOUT.chevronSize}
+                            tintColor={theme.colors.text}
+                          />
+                        </View>
+                      )}
+                    </View>
+                  </TouchableOpacity>
                   {isItemExpanded && (
                     <View style={styles.itemRowExpanded}>
-                      <View style={styles.valueBox}>
+                      <TouchableOpacity
+                        onPress={() => handleEdit(item)}
+                        style={styles.valueBox}
+                      >
                         <Text style={styles.valueBoxLabel}>{strings.valueLabel}</Text>
                         <Text style={styles.valueBoxText} selectable>
                           {item.value || strings.emptyValue}
                         </Text>
-                      </View>
+                      </TouchableOpacity>
                       <ItemRowActions
                         item={item}
                         onCopy={handleCopy}
@@ -223,7 +229,7 @@ export function StorageSection({
                       />
                     </View>
                   )}
-                </TouchableOpacity>
+                </View>
               );
             })
           )}
