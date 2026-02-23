@@ -14,5 +14,6 @@
 - [ ] I have run `npm run format`, `npm test`, and `npm run build`
 - [ ] My commit messages follow [Conventional Commits](https://www.conventionalcommits.org/)
 - [ ] I have updated documentation if needed
+- [ ] I have labeled this pull request appropriately (e.g., `bug`, `feature`, `docs`, `breaking`, etc.)
 
 See [docs/CONTRIBUTING.md](../docs/CONTRIBUTING.md) for full guidelines.
