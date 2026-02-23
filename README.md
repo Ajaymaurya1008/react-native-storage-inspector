@@ -91,6 +91,7 @@ interface IStorageAdapter {
 ## Development
 
 ```bash
+npm run commit       # Guided commit (Commitizen) – prompts for type, scope, message
 npm run format       # Format all files with Prettier
 npm run format:check # Check formatting (fails if any file is unformatted)
 npm run lint         # Same as format:check
@@ -98,14 +99,9 @@ npm test             # Run tests
 npm run build        # Build src/ to dist/
 ```
 
-- **Formatting:** No auto-format. Run `npm run format` to fix. **Pre-commit** runs `format:check`; **pre-push** runs `format:check`, `test`, and `build`.
-- **Commits:** Use [Conventional Commits](https://www.conventionalcommits.org/) (enforced by `commit-msg` hook).
-- **Before publish:** `prepublishOnly` runs `format:check`, `test`, and `build`.
-
-### Publishing
-
-1. Run `npm version patch` (or `minor`/`major`).
-2. Run `npm publish` (prepublishOnly will run checks and build).
+- **Commits:** Use `npm run commit` for guided [Conventional Commits](https://www.conventionalcommits.org/), or write messages by hand; **Commitlint** (via `commit-msg` hook) enforces the format.
+- **Formatting:** Run `npm run format` to fix. **Pre-commit** runs `format:check`.
+- **Releases:** Version and npm publish are automated by **semantic-release** on push to `main`. See [docs/RELEASES.md](docs/RELEASES.md) for Commitizen, Commitlint, and semantic-release in detail.
 
 See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for full guidelines. [Code of Conduct](docs/CODE_OF_CONDUCT.md).
 

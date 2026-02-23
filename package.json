@@ -6,6 +6,7 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
+    "commit": "cz",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "build": "tsup && node scripts/postbuild.js",
@@ -14,7 +15,8 @@
     "format:check": "prettier --check .",
     "lint": "prettier --check .",
     "prepublishOnly": "npm run format:check && npm test && npm run build",
-    "prepare": "husky"
+    "prepare": "husky",
+    "release": "semantic-release"
   },
   "keywords": [
     "react-native",
@@ -37,6 +39,11 @@
     "url": "https://github.com/Ajaymaurya1008/react-native-storage-inspector/issues"
   },
   "homepage": "https://github.com/Ajaymaurya1008/react-native-storage-inspector#readme",
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
   "publishConfig": {
     "access": "public",
     "provenance": true
@@ -71,7 +78,13 @@
     "prettier": "^3.8.1",
     "ts-jest": "^29.4.6",
     "tsup": "^8.5.1",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "semantic-release": "^24.2.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^12.0.0"
   },
   "files": [
     "dist"

@@ -1,31 +1,35 @@
-name: Publish to npm
+# Runs semantic-release on push to main: analyzes commits, bumps version,
+# updates CHANGELOG.md and package.json, creates a git tag, and publishes to npm.
+# Uses npm trusted publishing (OIDC) – no NPM_TOKEN. Configure the trusted
+# publisher for this repo at npmjs.com → Package → Settings → Trusted publishing.
+# https://docs.npmjs.com/trusted-publishers#supported-cicd-providers
+name: Release
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches: [main]
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
-      contents: read
+      contents: write
+      id-token: write # Required for npm trusted publishing (OIDC)
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
 
-      - run: npm install -g npm@latest
-
       - run: npm ci
       - run: npm run format:check
       - run: npm test
       - run: npm run build
 
-      - run: npm publish
+      - run: npx semantic-release
         env:
           NPM_CONFIG_PROVENANCE: true
