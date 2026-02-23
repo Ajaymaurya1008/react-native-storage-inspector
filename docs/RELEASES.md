@@ -137,15 +137,18 @@ So: **only `feat` and `fix` (and breaking changes) drive a release**; the type i
     1. **commit-analyzer** – reads commits, decides next version (patch/minor/major).
     2. **release-notes-generator** – turns commits into release notes text.
     3. **@semantic-release/changelog** – writes/updates `CHANGELOG.md`.
-    4. **@semantic-release/npm** – updates `version` in `package.json` and runs `npm publish`.
+    4. **@semantic-release/npm** – updates `version` in `package.json` only (`npmPublish: false`; see below).
     5. **@semantic-release/git** – commits `CHANGELOG.md` and `package.json`, creates the tag (e.g. `v1.2.0`), and pushes. The commit message uses `[skip ci]` so the push doesn’t trigger the release workflow again in a loop.
+    6. **@semantic-release/exec** – on success, runs `npm publish --provenance --access public` so publishing uses **OIDC** (no token).
 
 - **Where it runs:** In CI (GitHub Actions), not locally by default.
 - **Workflow:** `.github/workflows/publish.yml` (named “Release”):
   - **Trigger:** `push` to `main`.
   - **Environment:** Node.js 24, GitHub-hosted runner.
   - **Steps:** Checkout (with `fetch-depth: 0` so semantic-release sees full history), install deps, format check, test, build, then **`npx semantic-release`**.
-  - **Publishing:** Uses [npm trusted publishing (OIDC)](https://docs.npmjs.com/trusted-publishers#supported-cicd-providers) – no long-lived token. The workflow has `id-token: write` so the npm CLI can authenticate via OIDC when it runs publish.
+  - **Publishing:** Uses [npm trusted publishing (OIDC)](https://docs.npmjs.com/trusted-publishers#supported-cicd-providers) – no token. The workflow does **not** set `registry-url` (that would create an `.npmrc` using `NODE_AUTH_TOKEN` and cause 401). `@semantic-release/npm` is used with `npmPublish: false` so it does not run `npm whoami` (which does not work with OIDC). The actual publish is done by `@semantic-release/exec` via `npm publish --provenance --access public`, which uses OIDC when no token is present.
+
+- **If you see 401 or EINVALIDNPMTOKEN:** Remove **NPM_TOKEN** and **NODE_AUTH_TOKEN** from the repo’s **Settings → Secrets and variables → Actions**. With trusted publishing, no token must be used; OIDC is used instead.
 
 So the flow is:
 
