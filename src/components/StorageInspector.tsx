@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { View, Text, ScrollView, RefreshControl, StyleSheet } from 'react-native';
 import type { IStorageAdapter } from '@/adapters/types';
-import { createMMKVAdapter } from '@/adapters/mmkv';
+import { createMMKVAdapter, type MMKVInstance } from '@/adapters/mmkv';
 import { createAsyncStorageAdapter } from '@/adapters/async-storage';
 import { createKeychainAdapter } from '@/adapters/keychain';
 import { createSecureStoreAdapter } from '@/adapters/secure-store';
@@ -12,12 +12,8 @@ import { strings } from '@/strings';
 import { LAYOUT } from '@/constants';
 
 export interface StorageInspectorProps {
-  mmkvInstances?: Array<{
-    getAllKeys(): string[];
-    getString(k: string): string | undefined;
-    set(k: string, v: string | number | boolean): void;
-    delete(k: string): void;
-  }>;
+  /** Raw MMKV instances from createMMKV() (react-native-mmkv). */
+  mmkvInstances?: MMKVInstance[];
   secureStoreKeys?: string[];
   customAdapters?: IStorageAdapter[];
 }
@@ -48,7 +44,7 @@ export function StorageInspector(props: StorageInspectorProps) {
     if (secureStoreAdapter.isAvailable()) list.push(secureStoreAdapter);
 
     list.push(...customAdapters);
-    return list;
+    return list.sort((a, b) => a.name.localeCompare(b.name));
   }, [mmkvInstances, secureStoreKeys, customAdapters]);
 
   const handleRefresh = () => {
