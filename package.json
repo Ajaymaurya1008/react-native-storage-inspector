@@ -1,6 +1,6 @@
 {
   "name": "react-native-storage-inspector",
-  "version": "1.0.4",
+  "version": "1.0.3",
   "description": "Storage inspector for React Native and Expo: MMKV, AsyncStorage, Keychain, Expo Secure Store",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -84,8 +84,7 @@
     "semantic-release": "^24.2.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/npm": "^12.0.0",
-    "@semantic-release/exec": "^7.1.0"
+    "@semantic-release/npm": "^12.0.0"
   },
   "files": [
     "dist"

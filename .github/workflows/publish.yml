@@ -1,35 +1,49 @@
 name: Release
+
 on:
   push:
     branches:
       - main
 
 permissions:
-  contents: read # for checkout
+  contents: write        # create tags & releases
+  issues: write
+  pull-requests: write
+  id-token: write        # REQUIRED for npm trusted publishing (OIDC)
 
 jobs:
   release:
-    name: Release
+    name: Semantic Release
     runs-on: ubuntu-latest
-    permissions:
-      contents: write # to be able to publish a GitHub release
-      issues: write # to be able to comment on released issues
-      pull-requests: write # to be able to comment on released pull requests
-      id-token: write # to enable use of OIDC for trusted publishing and npm provenance
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-      - name: Setup Node.js
+          fetch-depth: 0   # required for semantic-release
+
+      - name: Setup Node.js (22 LTS)
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
+          node-version: 22.14.0
+          registry-url: https://registry.npmjs.org
+
+      # 🔥 Ensure latest npm (>=11.5.1 required for Trusted Publishing)
+      - name: Upgrade npm to latest
+        run: npm install -g npm@latest
+
+      - name: Verify Node & npm versions
+        run: |
+          node -v
+          npm -v
+
       - name: Install dependencies
-        run: npm clean-install
-      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
-        run: npm audit signatures
-      - name: Release
+        run: npm ci
+
+      - name: Build package
+        run: npm run build
+
+      - name: Run Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
