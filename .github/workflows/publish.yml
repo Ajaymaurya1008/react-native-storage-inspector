@@ -1,38 +1,35 @@
-# Runs semantic-release on push to main: analyzes commits, bumps version,
-# updates CHANGELOG.md and package.json, creates a git tag, and publishes to npm.
-# Uses npm trusted publishing (OIDC) – no NPM_TOKEN. Configure the trusted
-# publisher for this repo at npmjs.com → Package → Settings → Trusted publishing.
-# https://docs.npmjs.com/trusted-publishers#supported-cicd-providers
 name: Release
-
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+
+permissions:
+  contents: read # for checkout
 
 jobs:
   release:
+    name: Release
     runs-on: ubuntu-latest
-    # id-token required for npm trusted publishing (OIDC); contents: write for semantic-release (push release commit + tag)
     permissions:
-      id-token: write
-      contents: write
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for trusted publishing and npm provenance
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '24'
-
-      - run: npm install -g npm@latest
-
-      - run: npm ci
-      - run: npm run format
-      - run: npm test
-      - run: npm run build
-
-      - run: npx semantic-release
+          node-version: 'lts/*'
+      - name: Install dependencies
+        run: npm clean-install
+      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
+        run: npm audit signatures
+      - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
+        run: npx semantic-release
