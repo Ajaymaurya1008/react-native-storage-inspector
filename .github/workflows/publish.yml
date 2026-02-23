@@ -24,7 +24,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-          registry-url: 'https://registry.npmjs.org'
 
       - run: npm install -g npm@latest
 
@@ -35,4 +34,5 @@ jobs:
 
       - run: npx semantic-release
         env:
+          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
           NPM_CONFIG_PROVENANCE: true

@@ -1,6 +1,6 @@
 {
   "name": "react-native-storage-inspector",
-  "version": "1.0.4",
+  "version": "1.0.3",
   "description": "Storage inspector for React Native and Expo: MMKV, AsyncStorage, Keychain, Expo Secure Store",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
