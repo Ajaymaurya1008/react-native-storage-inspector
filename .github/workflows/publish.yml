@@ -12,9 +12,10 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    # id-token required for npm trusted publishing (OIDC); contents: write for semantic-release (push release commit + tag)
     permissions:
+      id-token: write
       contents: write
-      id-token: write # Required for npm trusted publishing (OIDC)
     steps:
       - uses: actions/checkout@v4
         with:
@@ -24,6 +25,8 @@ jobs:
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
+
+      - run: npm install -g npm@latest
 
       - run: npm ci
       - run: npm run format
