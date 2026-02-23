@@ -5,11 +5,13 @@
 module.exports = {
   branches: ['main'],
   plugins: [
-    '@semantic-release/commit-analyzer',
-    {
-      preset: 'conventionalcommits',
-      releaseRules: [{ type: 'chore', scope: 'release', release: 'patch' }],
-    },
+    [
+      '@semantic-release/commit-analyzer',
+      {
+        preset: 'conventionalcommits',
+        releaseRules: [{ type: 'chore', scope: 'release', release: 'patch' }],
+      },
+    ],
     '@semantic-release/release-notes-generator',
     ['@semantic-release/changelog', { changelogFile: 'CHANGELOG.md' }],
     // npmPublish: false skips verifyConditions (npm whoami), which doesn't work with OIDC.
