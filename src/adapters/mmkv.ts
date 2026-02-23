@@ -1,10 +1,11 @@
 import type { IStorageAdapter } from '@/adapters/types';
 
-type MMKVInstance = {
+/** Raw MMKV instance from createMMKV() (react-native-mmkv). */
+export type MMKVInstance = {
   getAllKeys(): string[];
   getString(key: string): string | undefined;
   set(key: string, value: string | number | boolean): void;
-  delete(key: string): void;
+  remove(key: string): void | boolean;
 };
 
 export function createMMKVAdapter(
@@ -26,7 +27,7 @@ export function createMMKVAdapter(
       return Promise.resolve();
     },
     removeItem(key: string): Promise<void> {
-      instance.delete(key);
+      instance.remove(key);
       return Promise.resolve();
     },
     isAvailable(): boolean {

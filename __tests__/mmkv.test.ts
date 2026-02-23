@@ -7,7 +7,7 @@ describe('createMMKVAdapter', () => {
       key === 'key1' ? 'value1' : key === 'key2' ? 'value2' : undefined
     ),
     set: jest.fn(),
-    delete: jest.fn(),
+    remove: jest.fn(() => true),
   };
 
   beforeEach(() => {
@@ -45,10 +45,10 @@ describe('createMMKVAdapter', () => {
     expect(mockInstance.set).toHaveBeenCalledWith('k', 'v');
   });
 
-  it('removeItem calls instance.delete', async () => {
+  it('removeItem calls instance.remove', async () => {
     const adapter = createMMKVAdapter(mockInstance);
     await adapter.removeItem('key1');
-    expect(mockInstance.delete).toHaveBeenCalledWith('key1');
+    expect(mockInstance.remove).toHaveBeenCalledWith('key1');
   });
 
   it('isAvailable returns true', () => {

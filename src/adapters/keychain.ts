@@ -48,7 +48,7 @@ export function createKeychainAdapter(): IStorageAdapter {
         }
       }
 
-      return genericServices;
+      return [...new Set(genericServices)];
     },
     async getItem(key: string): Promise<string | null> {
       const kc = getKc();
