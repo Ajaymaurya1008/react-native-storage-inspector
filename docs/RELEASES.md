@@ -137,18 +137,18 @@ So: **only `feat` and `fix` (and breaking changes) drive a release**; the type i
     1. **commit-analyzer** – reads commits, decides next version (patch/minor/major).
     2. **release-notes-generator** – turns commits into release notes text.
     3. **@semantic-release/changelog** – writes/updates `CHANGELOG.md`.
-    4. **@semantic-release/npm** – updates `version` in `package.json` only (`npmPublish: false`; see below).
+    4. **@semantic-release/npm** – updates `version` in `package.json` and publishes the package to npm. Provenance is configured via `publishConfig` in `package.json`.
     5. **@semantic-release/git** – commits `CHANGELOG.md` and `package.json`, creates the tag (e.g. `v1.2.0`), and pushes. The commit message uses `[skip ci]` so the push doesn’t trigger the release workflow again in a loop.
-    6. **@semantic-release/exec** – on success, runs `npm publish --provenance --access public` so publishing uses **OIDC** (no token).
+    6. **@semantic-release/github** – creates a GitHub release with release notes.
 
 - **Where it runs:** In CI (GitHub Actions), not locally by default.
 - **Workflow:** `.github/workflows/publish.yml` (named “Release”):
   - **Trigger:** `push` to `main`.
-  - **Environment:** Node.js 24, GitHub-hosted runner.
-  - **Steps:** Checkout (with `fetch-depth: 0` so semantic-release sees full history), install deps, format check, test, build, then **`npx semantic-release`**.
-  - **Publishing:** Uses [npm trusted publishing (OIDC)](https://docs.npmjs.com/trusted-publishers#supported-cicd-providers) – no token. The workflow does **not** set `registry-url` (that would create an `.npmrc` using `NODE_AUTH_TOKEN` and cause 401). `@semantic-release/npm` is used with `npmPublish: false` so it does not run `npm whoami` (which does not work with OIDC). The actual publish is done by `@semantic-release/exec` via `npm publish --provenance --access public`, which uses OIDC when no token is present.
+  - **Environment:** Node.js 22, GitHub-hosted runner.
+  - **Steps:** Checkout (with `fetch-depth: 0` so semantic-release sees full history), upgrade npm to latest (≥ 11.5.1 required for trusted publishing), install deps, build, then **`npx semantic-release`**.
+  - **Publishing:** Uses [npm trusted publishing (OIDC)](https://docs.npmjs.com/trusted-publishers#supported-cicd-providers) – no token. The workflow sets `id-token: write` permission to enable OIDC. `@semantic-release/npm` handles publishing directly; provenance attestations are generated via `publishConfig.provenance: true` in `package.json`. The workflow does **not** set `registry-url` in `actions/setup-node` (that would create an `.npmrc` expecting `NODE_AUTH_TOKEN` and conflict with OIDC).
 
-- **If you see 401 or EINVALIDNPMTOKEN:** Remove **NPM_TOKEN** and **NODE_AUTH_TOKEN** from the repo’s **Settings → Secrets and variables → Actions**. With trusted publishing, no token must be used; OIDC is used instead.
+- **If you see 401 or EINVALIDNPMTOKEN:** Remove **NPM_TOKEN** and **NODE_AUTH_TOKEN** from the repo’s **Settings → Secrets and variables → Actions**. With trusted publishing, no token should be present; OIDC is used instead. Also ensure trusted publishing is configured at `https://www.npmjs.com/package/react-native-storage-inspector/access`.
 
 So the flow is:
 

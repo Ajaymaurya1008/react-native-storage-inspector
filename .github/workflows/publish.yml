@@ -25,8 +25,8 @@ jobs:
       - name: Setup Node.js (22 LTS)
         uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
-          registry-url: https://registry.npmjs.org
+          node-version: 22
+          cache: 'npm'
 
       # 🔥 Ensure latest npm (>=11.5.1 required for Trusted Publishing)
       - name: Upgrade npm to latest
