@@ -120,6 +120,18 @@ See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for full guidelines. [Code of C
 
 For AI assistants: see [ai/PRIMER.md](ai/PRIMER.md).
 
+## Documentation
+
+Full documentation is built with [Docusaurus](https://docusaurus.io):
+
+```bash
+cd website
+npm install
+npm run start
+```
+
+Open [http://localhost:3000](http://localhost:3000). The docs cover installation, usage, all supported storages, API reference, Expo, custom adapters, troubleshooting, and examples. A **Demo** page is reserved for an embedded demo (e.g. video, GIF, or Expo Snack link).
+
 ## License
 
 MIT
