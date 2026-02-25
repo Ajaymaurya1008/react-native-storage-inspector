@@ -8,20 +8,44 @@ Thank you for your interest in contributing! This document provides guidelines f
 2. Run `npm install` in the project root.
 3. Run `npm run build` to ensure the project builds.
 
+## Examples
+
+The repo includes runnable examples under `examples/`:
+
+- **expo-example** — Expo app. From `examples/expo-example`: `npm install` then `npx expo start`. Use a dev build or Expo Go to try the inspector.
+- **community-cli-example** — React Native CLI app. From `examples/community-cli-example`: `npm install`, then `npm start` in one terminal and `npm run ios` or `npm run android` in another. For iOS, run `bundle install` and `bundle exec pod install` once.
+
+Use these to manually verify the inspector with different storage backends (MMKV, Async Storage, etc.) before opening a PR.
+
 ## Development
 
-- **Format:** All code is formatted with [Prettier](https://prettier.io/). Run `npm run format` before committing.
+- **Format:** All code is formatted with [Prettier](https://prettier.io/). Run `npm run format` before committing. The pre-commit hook runs `format:check` and blocks commits when files are unformatted.
 - **Component props:** Use a single `props` parameter and destructure inside the body: `function MyComponent(props: MyComponentProps) { const { a, b } = props; ... }`. Do not destructure in the parameter list.
 - **Test:** Run `npm test` before pushing.
 - **Build:** The library is built with [tsup](https://tsup.egoist.dev/). Run `npm run build` to build.
 
-## Git Hooks
+## Git Hooks (Husky)
 
 The project uses [Husky](https://typicode.github.io/husky/) for Git hooks:
 
-- **pre-commit:** Runs `format:check`; commit is blocked if any file is unformatted.
-- **commit-msg:** Validates commit messages with [commitlint](https://commitlint.js.org/) (conventional commits).
-- **pre-push:** Runs `format:check`, `test`, and `build`; push is blocked if any fail.
+| Hook           | Command                                 | Effect                                                                                   |
+| -------------- | --------------------------------------- | ---------------------------------------------------------------------------------------- |
+| **pre-commit** | `npm run format:check`                  | Commit is blocked if any file is unformatted.                                            |
+| **commit-msg** | `npx commitlint --edit $1`              | Commit message must follow [Conventional Commits](https://www.conventionalcommits.org/). |
+| **pre-push**   | `format:check` then `test` then `build` | Push is blocked if format check, tests, or build fail.                                   |
+
+Fix format with `npm run format`. Use `npm run commit` for a guided commit (Commitizen).
+
+## CI
+
+GitHub Actions runs on every push and pull request to `main` (see [.github/workflows/ci.yml](../.github/workflows/ci.yml)):
+
+1. `npm ci`
+2. `npm run format:check`
+3. `npm test`
+4. `npm run build`
+
+All steps must pass for PRs to be merged. Run the same commands locally before pushing.
 
 ## Commit Messages
 
@@ -45,14 +69,15 @@ We use [Conventional Commits](https://www.conventionalcommits.org/) for clear an
 ## Pull Requests
 
 1. Create a branch from `main` for your work.
-2. Make your changes and ensure they pass `npm run format:check`, `npm test`, and `npm run build`.
-3. Commit with conventional commit messages.
+2. Make your changes and ensure they pass `npm run format:check`, `npm test`, and `npm run build` (same as CI and the pre-push hook).
+3. Commit with conventional commit messages (use `npm run commit` or follow the format enforced by commitlint).
 4. Open a pull request. Use the [PR template](../.github/PULL_REQUEST_TEMPLATE.md); it will pre-fill when you open a new PR on GitHub.
-5. Ensure CI passes (if applicable).
+5. Ensure CI passes on your PR (format:check, test, build).
 
 ## Testing
 
-The `storage-inspector-test` app in the monorepo can be used to manually verify changes. Run it with Expo and test the inspector with different storage backends.
+- **Unit tests:** `npm test` (Jest). CI and the pre-push hook run this.
+- **Manual testing:** Use the apps in `examples/` (see [Examples](#examples) above) to verify the inspector with MMKV, Async Storage, Keychain, or Secure Store before submitting a PR.
 
 ## Questions?
 

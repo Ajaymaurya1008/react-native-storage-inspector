@@ -88,6 +88,17 @@ interface IStorageAdapter {
 }
 ```
 
+## Examples
+
+The `examples/` directory contains runnable apps that demonstrate the inspector with different setups. Use them to try the UI, test your changes, or copy integration patterns.
+
+| Example                   | Libraries                                                         |
+| ------------------------- | ----------------------------------------------------------------- |
+| **expo-example**          | • react-native-mmkv<br>• Async Storage<br>• expo-secure-store     |
+| **community-cli-example** | • react-native-mmkv<br>• Async Storage<br>• react-native-keychain |
+
+**Note:** It is generally not recommended to use both React Native Keychain and Expo Secure Store within the same application, as both libraries interact with the underlying native secure storage on each platform. Using both may lead to unexpected behavior, conflicts, or redundancy in how sensitive data is stored and accessed. Choose the provider that best fits your app’s needs.
+
 ## Development
 
 ```bash
@@ -99,8 +110,10 @@ npm test             # Run tests
 npm run build        # Build src/ to dist/
 ```
 
-- **Commits:** Use `npm run commit` for guided [Conventional Commits](https://www.conventionalcommits.org/), or write messages by hand; **Commitlint** (via `commit-msg` hook) enforces the format.
-- **Formatting:** Run `npm run format` to fix. **Pre-commit** runs `format:check`.
+- **Commits:** Use `npm run commit` for guided [Conventional Commits](https://www.conventionalcommits.org/), or write messages by hand; **Commitlint** (via Husky `commit-msg` hook) enforces the format.
+- **Formatting:** Run `npm run format` to fix. **Husky pre-commit** runs `format:check`; unformatted files block the commit.
+- **Pre-push:** Husky runs `format:check`, `test`, and `build` before push; any failure blocks the push.
+- **CI:** On push or pull request to `main`, GitHub Actions runs `format:check`, `test`, and `build`. All must pass for PRs to merge.
 - **Releases:** Version and npm publish are automated by **semantic-release** on push to `main`. See [docs/RELEASES.md](docs/RELEASES.md) for Commitizen, Commitlint, and semantic-release in detail.
 
 See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for full guidelines. [Code of Conduct](docs/CODE_OF_CONDUCT.md).
