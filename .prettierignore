@@ -5,3 +5,9 @@ coverage/
 __mocks__/
 *.min.js
 CHANGELOG.md
+examples/**/android/
+examples/**/ios/
+examples/**/.bundle/
+examples/**/node_modules/
+examples/**/vendor/
+examples/**/.expo/
