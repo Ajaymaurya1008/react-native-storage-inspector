@@ -4,3 +4,4 @@ build/
 coverage/
 __mocks__/
 *.min.js
+CHANGELOG.md
