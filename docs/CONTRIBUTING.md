@@ -12,8 +12,8 @@ Thank you for your interest in contributing! This document provides guidelines f
 
 The repo includes runnable examples under `examples/`:
 
-- **expo-example** — Expo app. From `examples/expo-example`: `npm install` then `npx expo start`. Use a dev build or Expo Go to try the inspector.
-- **community-cli-example** — React Native CLI app. From `examples/community-cli-example`: `npm install`, then `npm start` in one terminal and `npm run ios` or `npm run android` in another. For iOS, run `bundle install` and `bundle exec pod install` once.
+- **expo-example**: Expo app. From `examples/expo-example`: `npm install` then `npx expo start`. Use a dev build or Expo Go to try the inspector.
+- **community-cli-example**: React Native CLI app. From `examples/community-cli-example`: `npm install`, then `npm start` in one terminal and `npm run ios` or `npm run android` in another. For iOS, run `bundle install` and `bundle exec pod install` once.
 
 Use these to manually verify the inspector with different storage backends (MMKV, Async Storage, etc.) before opening a PR.
 

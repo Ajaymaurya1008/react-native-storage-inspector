@@ -29,12 +29,12 @@ Output is in `website/build/`. Deploy that folder to GitHub Pages, Vercel, Netli
 
 ## Structure
 
-- **`docs/`** — Markdown documentation (Introduction, Installation, Usage, API, etc.).
-- **`src/pages/index.js`** — Home page (hero, features, demo placeholder).
-- **`src/css/custom.css`** — Custom theme and demo placeholder styles.
-- **`static/img/`** — Logo and assets.
-- **`docusaurus.config.js`** — Site title, base URL, navbar, footer.
-- **`sidebars.js`** — Doc sidebar order.
+- **`docs/`**:Markdown documentation (Introduction, Installation, Usage, API, etc.).
+- **`src/pages/index.js`**:Home page (hero, features, demo placeholder).
+- **`src/css/custom.css`**:Custom theme and demo placeholder styles.
+- **`static/img/`**:Logo and assets.
+- **`docusaurus.config.js`**:Site title, base URL, navbar, footer.
+- **`sidebars.js`**:Doc sidebar order.
 
 ## Demo
 

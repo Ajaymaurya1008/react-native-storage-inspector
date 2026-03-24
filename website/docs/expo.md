@@ -32,15 +32,4 @@ All four storages are supported:
 
 ## Optional dependencies and Metro
 
-If you see **"Requiring unknown module"** for optional storage packages (Async Storage, Keychain, Secure Store), enable optional dependencies in Metro:
-
-```js
-// metro.config.js
-const { getDefaultConfig } = require('expo/metro-config');
-const config = getDefaultConfig(__dirname);
-config.transformer ??= {};
-config.transformer.allowOptionalDependencies = true;
-module.exports = config;
-```
-
-See [Troubleshooting](/docs/troubleshooting) for more.
+If you see **"Requiring unknown module"** for optional storage packages (Async Storage, Keychain, Secure Store), see [Troubleshooting → "Requiring unknown module"](/docs/troubleshooting#requiring-unknown-module-metro) for the Metro fix.

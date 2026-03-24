@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Usage
 
-Use `StorageInspector` as a **full-page component**. It renders only the content area (list of storages, keys, and values). It does **not** render a header, back button, or status bar — your screen or navigation should provide those.
+Use `StorageInspector` as a **full-page component**. It renders only the content area (list of storages, keys, and values). It does **not** render a header, back button, or status bar; your screen or navigation should provide those.
 
 ## Basic setup
 
@@ -49,11 +49,11 @@ Multiple MMKV instances are supported; each gets its own tab (e.g. "MMKV 1", "MM
 
 ## Props overview
 
-| Prop              | Type                | Description                                                                                       |
-| ----------------- | ------------------- | ------------------------------------------------------------------------------------------------- |
-| `mmkvInstances`   | `MMKV[]`            | **Required for MMKV.** Pass your MMKV instances to inspect.                                       |
-| `secureStoreKeys` | `string[]`          | Optional. Known keys for Secure Store (no list API). Merged with keys persisted by the inspector. |
-| `customAdapters`  | `IStorageAdapter[]` | Optional. Custom adapters for other storages.                                                     |
+| Prop              | Type                | Description                                                                                                                         |
+| ----------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `mmkvInstances`   | `MMKV[]`            | **Required for MMKV.** Pass your MMKV instances to inspect.                                                                         |
+| `secureStoreKeys` | `string[]`          | **Required for secure store.** Known keys for Secure Store (since no list API exists). Merged with keys persisted by the inspector. |
+| `customAdapters`  | `IStorageAdapter[]` | Optional. Custom adapters for other storages.                                                                                       |
 
 See [StorageInspector props](/docs/api/storage-inspector-props) for full API details.
 

@@ -47,5 +47,3 @@ pnpm add react-native-mmkv
 
 - **react** and **react-native** are peer dependencies; your project must already have them.
 - Storage packages (`react-native-mmkv`, `@react-native-async-storage/async-storage`, `react-native-keychain`, `expo-secure-store`) are **optional** peer dependencies. Only the ones you install will show up as tabs in the inspector.
-
-After installation, see [Usage](/docs/usage) to render the inspector in your app.

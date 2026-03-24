@@ -49,5 +49,5 @@ Custom adapters appear as additional tabs, sorted by `name` together with built-
 ## Rules
 
 - **Values are strings.** The inspector reads and writes string values. If your backend stores JSON or other formats, serialize/deserialize inside `getItem` / `setItem`.
-- **isAvailable()** — Return `false` when the backend is not usable (e.g. not initialized); the adapter will be hidden.
-- **Errors** — Throwing from `getAllKeys`, `getItem`, `setItem`, or `removeItem` will surface in the UI; handle errors appropriately so the inspector can show a clear message.
+- **isAvailable()**: Return `false` when the backend is not usable (e.g. not initialized); the adapter will be hidden.
+- **Errors**: Throwing from `getAllKeys`, `getItem`, `setItem`, or `removeItem` will surface in the UI; handle errors appropriately so the inspector can show a clear message.

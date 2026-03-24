@@ -8,21 +8,16 @@ sidebar_position: 1
 
 ## Why use it?
 
-- **See everything** — MMKV, Async Storage, Keychain, and Expo Secure Store in a single UI
-- **No backend** — Runs entirely inside your app; ideal for debugging and support
-- **Optional dependencies** — Tabs appear only for the storage libraries you actually use
-- **Custom storages** — Add your own adapters for any key-value store
+- **See everything**: MMKV, Async Storage, Keychain, and Expo Secure Store in a single UI
+- **No backend**: Runs entirely inside your app; ideal for debugging and support
+- **Optional dependencies**: Tabs appear only for the storage libraries you actually use
+- **Custom storages**: Add your own adapters for any key-value store
 
 ## Supported libraries
 
-Tabs appear only when the corresponding package is installed (optional peer dependencies).
+Out of the box: **MMKV**, **Async Storage**, **React Native Keychain**, and **Expo Secure Store**. Tabs appear only for the packages you actually install.
 
-| Library                                                                      | Package                                     | Storage      |
-| ---------------------------------------------------------------------------- | ------------------------------------------- | ------------ |
-| [react-native-mmkv](https://github.com/mrousavy/react-native-mmkv)           | `react-native-mmkv`                         | MMKV         |
-| [Async Storage](https://github.com/react-native-async-storage/async-storage) | `@react-native-async-storage/async-storage` | AsyncStorage |
-| [react-native-keychain](https://github.com/oblador/react-native-keychain)    | `react-native-keychain`                     | Keychain     |
-| [expo-secure-store](https://docs.expo.dev/versions/latest/sdk/securestore/)  | `expo-secure-store`                         | Secure Store |
+See [Supported storages](/docs/storages) for the full comparison table, Expo Go compatibility, and per-storage setup.
 
 ## Quick start
 
@@ -37,10 +32,8 @@ import { StorageInspector } from 'react-native-storage-inspector';
 export function StorageScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <StorageInspector mmkvInstances={[yourMmkvInstance]} />
+      <StorageInspector />
     </SafeAreaView>
   );
 }
 ```
-
-Next: [Installation](/docs/installation) → [Usage](/docs/usage).

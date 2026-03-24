@@ -6,7 +6,7 @@ sidebar_position: 1
 
 The library exposes:
 
-- **Components:** `StorageInspector` — the main UI.
+- **Components:** `StorageInspector`, the main UI.
 - **Types:** `StorageInspectorProps`, `IStorageAdapter`, `StorageItem`, `Theme`, and adapter-specific types.
 - **Adapter factories:** `createMMKVAdapter`, `createAsyncStorageAdapter`, `createKeychainAdapter`, `createSecureStoreAdapter` (used internally; you can use them for custom flows).
 - **Theme and strings:** `theme`, `strings` for optional customization.

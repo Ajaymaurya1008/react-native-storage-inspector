@@ -21,11 +21,11 @@ interface StorageInspectorProps {
 
 ## Props
 
-| Prop              | Type                | Description                                                                                                                                                         |
-| ----------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `mmkvInstances`   | `MMKVInstance[]`    | **Required for MMKV.** Pass your MMKV instances from `createMMKV()`. Each instance gets its own section (e.g. "MMKV", "MMKV 2"). Omit or empty array = no MMKV tab. |
-| `secureStoreKeys` | `string[]`          | Optional. List of key names for Expo Secure Store. Merged with keys the inspector persists. Use when you know keys that aren’t yet in the persisted list.           |
-| `customAdapters`  | `IStorageAdapter[]` | Optional. Custom adapters implementing [IStorageAdapter](/docs/api/i-storage-adapter). They appear as additional tabs, sorted by name with built-in storages.       |
+| Prop              | Type                | Description                                                                                                                                                                    |
+| ----------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `mmkvInstances`   | `MMKVInstance[]`    | **Required for MMKV.** Pass your MMKV instances from `createMMKV()`. Each instance gets its own section (e.g. "MMKV", "MMKV 2"). Omit or empty array = no MMKV tab.            |
+| `secureStoreKeys` | `string[]`          | **Required for secure store.** List of key names for Expo Secure Store. Merged with keys the inspector persists. Use when you know keys that aren’t yet in the persisted list. |
+| `customAdapters`  | `IStorageAdapter[]` | Optional. Custom adapters implementing [IStorageAdapter](/docs/api/i-storage-adapter). They appear as additional tabs, sorted by name with built-in storages.                  |
 
 ## Example
 
