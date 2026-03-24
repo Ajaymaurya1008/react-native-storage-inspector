@@ -1,6 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Share, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Share,
+  StyleSheet,
+  Animated,
+  LayoutAnimation,
+  Platform,
+  UIManager,
+} from 'react-native';
+
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 import type { IStorageAdapter } from '@/adapters/types';
+import { useExpandAnimation } from '@/hooks/useExpandAnimation';
 import type { StorageItem } from '@/adapters/types';
 import { useStorageItems } from '@/hooks/useStorageItems';
 import { ItemForm } from '@/components/ItemForm';
@@ -34,7 +49,15 @@ export function StorageSection(props: StorageSectionProps) {
   const [expandedInternal, setExpandedInternal] = useState(defaultExpanded);
   const expanded = expandedProp !== undefined ? expandedProp : expandedInternal;
 
+  const { chevronStyle, animateChevron } = useExpandAnimation(expanded);
+
+  // expanded can change externally via expandedProp — useEffect is necessary here
+  useEffect(() => {
+    animateChevron(expanded);
+  }, [expanded, animateChevron]);
+
   const handleToggleExpanded = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     if (onToggleExpanded) onToggleExpanded();
     else setExpandedInternal((p: boolean) => !p);
   };
@@ -118,11 +141,13 @@ export function StorageSection(props: StorageSectionProps) {
             disabled={items.length === 0}
           />
           <View style={styles.iconSlot}>
-            <Icon
-              name={expanded ? 'chevronUp' : 'chevronDown'}
-              size={LAYOUT.chevronSize}
-              tintColor={theme.colors.text}
-            />
+            <Animated.View style={chevronStyle}>
+              <Icon
+                name="chevronDown"
+                size={LAYOUT.chevronSize}
+                tintColor={theme.colors.text}
+              />
+            </Animated.View>
           </View>
         </View>
       </TouchableOpacity>
