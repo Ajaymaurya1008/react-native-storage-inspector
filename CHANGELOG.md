@@ -1,3 +1,10 @@
+## [1.0.5](https://github.com/Ajaymaurya1008/react-native-storage-inspector/compare/v1.0.4...v1.0.5) (2026-03-24)
+
+
+### Bug Fixes
+
+* remove accidentally committed absolute-path file ([#9](https://github.com/Ajaymaurya1008/react-native-storage-inspector/issues/9)) ([c7fc668](https://github.com/Ajaymaurya1008/react-native-storage-inspector/commit/c7fc6684545600021a48ba24139beec22058f4fb))
+
 ## [1.0.4](https://github.com/Ajaymaurya1008/react-native-storage-inspector/compare/v1.0.3...v1.0.4) (2026-02-24)
 
 
