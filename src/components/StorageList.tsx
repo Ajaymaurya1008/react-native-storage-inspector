@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import type { StorageItem } from '@/adapters/types';
 import { Icon } from '@/components/Icon';
 import { ItemRowActions } from '@/components/ItemRowActions';
+import { useExpandAnimation } from '@/hooks/useExpandAnimation';
 import { theme } from '@/theme';
 import { strings } from '@/strings';
 import { LAYOUT } from '@/constants';
@@ -17,18 +18,16 @@ export interface StorageListProps {
 export function StorageList(props: StorageListProps) {
   const { item, onCopy, onEdit, onDelete } = props;
 
-  const [expandedKeys, setExpandedKeys] = useState(new Set<string>());
+  const [isExpanded, setIsExpanded] = useState(false);
   const charCount = item.value.length;
+  const { chevronStyle, heightAnim, animate, onMeasureLayout } =
+    useExpandAnimation(false);
 
   const handleToggleExpanded = () => {
-    setExpandedKeys((prev) => {
-      const next = new Set(prev);
-      if (next.has(item.key)) next.delete(item.key);
-      else next.add(item.key);
-      return next;
-    });
+    const next = !isExpanded;
+    setIsExpanded(next);
+    animate(next);
   };
-  const isExpanded = expandedKeys.has(item.key);
   return (
     <View style={styles.itemRow}>
       <TouchableOpacity onPress={handleToggleExpanded} activeOpacity={0.7}>
@@ -39,27 +38,47 @@ export function StorageList(props: StorageListProps) {
             </Text>
             <Text style={styles.itemChars}>{strings.charCount(charCount)}</Text>
           </View>
-          {!isExpanded ? (
+          {!isExpanded && (
             <ItemRowActions
               item={item}
               onCopy={onCopy}
               onEdit={onEdit}
               onDelete={onDelete}
-              showChevron
-              chevronDirection="down"
             />
-          ) : (
-            <View style={styles.iconSlot}>
+          )}
+          <View style={styles.iconSlot}>
+            <Animated.View style={chevronStyle}>
               <Icon
-                name="chevronUp"
+                name="chevronDown"
                 size={LAYOUT.chevronSize}
                 tintColor={theme.colors.text}
               />
-            </View>
-          )}
+            </Animated.View>
+          </View>
         </View>
       </TouchableOpacity>
-      {isExpanded && (
+      {/* Ghost view: absolutely positioned so parent height:0 doesn't constrain it.
+          onLayout fires with the true natural height used to drive the animation. */}
+      <View
+        style={styles.expandedMeasure}
+        pointerEvents="none"
+        onLayout={onMeasureLayout}
+      >
+        <View style={styles.itemRowExpanded}>
+          <View style={styles.valueBox}>
+            <Text style={styles.valueBoxLabel}>{strings.valueLabel}</Text>
+            <Text style={styles.valueBoxText}>{item.value}</Text>
+          </View>
+          <ItemRowActions
+            item={item}
+            onCopy={onCopy}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        </View>
+      </View>
+
+      <Animated.View style={{ height: heightAnim, overflow: 'hidden' }}>
         <View style={styles.itemRowExpanded}>
           <TouchableOpacity onPress={() => onEdit(item)} style={styles.valueBox}>
             <Text style={styles.valueBoxLabel}>{strings.valueLabel}</Text>
@@ -74,7 +93,7 @@ export function StorageList(props: StorageListProps) {
             onDelete={onDelete}
           />
         </View>
-      )}
+      </Animated.View>
     </View>
   );
 }
@@ -116,6 +135,12 @@ const styles = StyleSheet.create({
   },
   itemRowExpanded: {
     paddingTop: 4,
+  },
+  expandedMeasure: {
+    position: 'absolute',
+    opacity: 0,
+    left: 0,
+    right: 0,
   },
   valueBox: {
     backgroundColor: colors.backgroundSecondary,
