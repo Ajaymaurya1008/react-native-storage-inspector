@@ -5,9 +5,18 @@ coverage/
 __mocks__/
 *.min.js
 CHANGELOG.md
+
+# Examples
 examples/**/android/
 examples/**/ios/
 examples/**/.bundle/
 examples/**/node_modules/
 examples/**/vendor/
 examples/**/.expo/
+
+# Website (Docusaurus)
+website/node_modules/
+website/build/
+website/.docusaurus/
+website/.cache/
+website/package-lock.json

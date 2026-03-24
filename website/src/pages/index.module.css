@@ -1,0 +1,54 @@
+.heroBanner {
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.features {
+  display: flex;
+  align-items: center;
+  padding: 2rem 0;
+  width: 100%;
+}
+
+.features h3 {
+  margin-top: 0;
+}
+
+.demoSection {
+  padding: 3rem 0 4rem;
+}
+
+.demoPlaceholder {
+  background: var(--ifm-code-background);
+  border: 2px dashed var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: var(--ifm-color-emphasis-600);
+  margin-top: 1.5rem;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.demoPlaceholder strong {
+  color: var(--ifm-font-color-base);
+}
+
+.demoPlaceholder p {
+  margin: 0.5rem 0;
+}
+
+.demoPlaceholder a {
+  font-weight: 600;
+}

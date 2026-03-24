@@ -1,0 +1,39 @@
+/**
+ * Custom CSS for react-native-storage-inspector docs
+ * https://docusaurus.io/docs/styling-layout
+ */
+
+:root {
+  --ifm-color-primary: #2e7d8a;
+  --ifm-color-primary-dark: #29708c;
+  --ifm-color-primary-darker: #276a85;
+  --ifm-color-primary-darkest: #20576e;
+  --ifm-color-primary-light: #33939e;
+  --ifm-color-primary-lighter: #3599a4;
+  --ifm-color-primary-lightest: #3db3bd;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #3db3bd;
+  --ifm-color-primary-dark: #2ea1ab;
+  --ifm-color-primary-darker: #2b98a2;
+  --ifm-color-primary-darkest: #247d86;
+  --ifm-color-primary-light: #4ec5ce;
+  --ifm-color-primary-lighter: #58c9d1;
+  --ifm-color-primary-lightest: #76d4db;
+}
+
+/* Demo section placeholder */
+.demo-placeholder {
+  background: var(--ifm-code-background);
+  border: 2px dashed var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: var(--ifm-color-emphasis-600);
+  margin: 2rem 0;
+}
+
+.demo-placeholder strong {
+  color: var(--ifm-font-color-base);
+}
